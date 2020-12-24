@@ -1,8 +1,9 @@
 
 import pandas as pd
-import piecharttemplates
+from . import piecharttemplates
 import webbrowser
 import numpy as np
+from IPython.core.display import display, HTML
 
 def color_generator (no_colors):
     colors = []
@@ -56,9 +57,11 @@ class PieChart:
 
 
     def showChart(self):
-        my_chart.constructChartHTML()
+        self.constructChartHTML()
         self.saveChart('deneme.html')
-        webbrowser.open('deneme.html')
+        display(HTML("<iframe width='800' height='400' frameBorder='0' src='deneme.html'></iframe>"))
+
+        #webbrowser.open('deneme.html')
 
 
     def saveChart(self,filename=""):

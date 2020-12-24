@@ -25,29 +25,29 @@ design_part = """
 script_part = """
 
 </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2> Benim Denemelik Chart im </h2>
-            <div>
-                <canvas id="myChart"></canvas>
-            </div>
+</head>
+<body>
+    <div class="container">
+        <h2> |Title| </h2>
+        <div>
+            <canvas id="myChart"></canvas>
         </div>
-      <script>
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Istanbul', 'Ankara', 'Bursa'],
-            datasets: [{
-            backgroundColor: ['#c027bd', '#69b9df', '#c8f80d'],
-            data: [15000, 4000, 3000]
-            }]
-        }
-        });
-      </script>
-    </body>
-    </html>
+    </div>
+  <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: |jsonLabelsData|,
+        datasets: [{
+        backgroundColor: |jsonColorsData|,
+        data: |jsonValuesData|
+        }]
+    }
+    });
+  </script>
+</body>
+</html>
 
 """
 

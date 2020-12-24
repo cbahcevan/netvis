@@ -1,7 +1,9 @@
 
 import pandas as pd
-import barcharttemplates
+from . import barcharttemplates
 import webbrowser
+from IPython.core.display import display, HTML
+
 
 
 class BarChart:
@@ -13,12 +15,20 @@ class BarChart:
                 title,
                 xname,
                 yname,
-                xtitle,
-                ytitle,
+                xtitle="",
+                ytitle="",
                 backgroundcolor=""
                 ):
 
         
+        if xtitle == "":
+            xtitle = xname
+        
+        if ytitle == "":
+            ytitle = yname
+        
+
+
         self.data_of_chart =  df.to_json(orient="records") 
 
         self.max_y_value = str(df[yname].max())
@@ -89,6 +99,7 @@ class BarChart:
             bar_chart_script_formatted  = bar_chart_script_formatted.replace("|horizontallinepart|",barcharttemplates.horizontal_lines_part)
 
 
+
         if self.vertical_grids is False:
             bar_chart_script_formatted = bar_chart_script_formatted.replace("|verticallinepart|","")
         else:
@@ -103,11 +114,14 @@ class BarChart:
 
 
     def showChart(self):
-        my_chart.constructChartHTML()
+
+        self.constructChartHTML()
         self.saveChart('deneme.html')
 
 
-        webbrowser.open('deneme.html')
+        #webbrowser.open('deneme.html')
+        display(HTML("<iframe width='1000' height='700' frameBorder='0' src='deneme.html'></iframe>"))
+
 
 
     def saveChart(self,filename=""):
@@ -132,9 +146,9 @@ if __name__ ==  '__main__':
 
 
     my_chart = BarChart(my_df,"Deneme","Sehir","Nufus","Sehir","Nufus")
-    my_chart.setHorizontalLines(True)
-    my_chart.setVerticalLines(True)
-    my_chart.setFontColor("yellow")
+    #my_chart.setHorizontalLines(True)
+    #my_chart.setVerticalLines(True)
+    my_chart.setFontColor("gray")
 
     my_chart.showChart()
 

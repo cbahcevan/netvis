@@ -36,7 +36,7 @@ svg {
 
 text {
   font-size: 12px;
-  fill: yellow;
+  fill: gray;
 }
 
 path {
@@ -133,22 +133,8 @@ text.source {
       .call(d3.axisLeft(yScale));
 
     
-        chart.append('g')
-       .attr('class', 'grid')
-       .attr('transform', `translate(0, ${height})`)
-       .call(makeXLines()
-         .tickSize(-height, 0, 0)
-         .tickFormat('')
-       )
-
 
     
-    chart.append('g')
-      .attr('class', 'grid')
-      .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat(''))
-
 
     const barGroups = chart.selectAll()
       .data(sample)
