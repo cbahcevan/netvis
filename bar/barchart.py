@@ -1,12 +1,50 @@
 
 import pandas as pd
-from . import barcharttemplates
+import barcharttemplates
 import webbrowser
 from IPython.core.display import display, HTML
+from IPython import get_ipython
 
+
+def isEnviromentIPython() -> bool:
+    try:
+        shell_name = get_ipython().__class__.__name__
+
+        return shell_name in ['ZMQInteractiveShell','TerminalInteractiveShell']
+    
+    except:
+
+        return False
 
 
 class BarChart:
+
+    def __init__(self):
+        pass
+
+
+    def saveChart(self,filename=""):
+
+
+
+        current_file = open(filename, mode = "w", encoding="utf-8")
+        current_file.write(self.current_html)
+        current_file.close()
+
+
+    def showChart(self):
+
+        self.constructChartHTML()
+        self.saveChart('deneme.html')
+
+        if isEnviromentIPython():
+
+            display(HTML("<iframe width='1000' height='700' frameBorder='0' src='deneme.html'></iframe>"))
+        
+        else:
+            webbrowser.open('deneme.html')
+
+class BasicBarChart(BarChart):
 
 
 
@@ -113,24 +151,10 @@ class BarChart:
 
 
 
-    def showChart(self):
-
-        self.constructChartHTML()
-        self.saveChart('deneme.html')
+class Horizontal(BarChart):
+    pass
 
 
-        #webbrowser.open('deneme.html')
-        display(HTML("<iframe width='1000' height='700' frameBorder='0' src='deneme.html'></iframe>"))
-
-
-
-    def saveChart(self,filename=""):
-
-
-
-        current_file = open(filename, mode = "w", encoding="utf-8")
-        current_file.write(self.current_html)
-        current_file.close()
 
 
 class StackedBarChart:
@@ -145,7 +169,7 @@ if __name__ ==  '__main__':
     my_df["Color"] = ["#5d2f8e","#5d2f8e","#5d2f8e"]
 
 
-    my_chart = BarChart(my_df,"Deneme","Sehir","Nufus","Sehir","Nufus")
+    my_chart = BasicBarChart(my_df,"Deneme","Sehir","Nufus","Sehir","Nufus")
     #my_chart.setHorizontalLines(True)
     #my_chart.setVerticalLines(True)
     my_chart.setFontColor("gray")
