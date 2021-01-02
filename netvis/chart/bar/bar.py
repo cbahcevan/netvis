@@ -1,7 +1,7 @@
 
 import pandas as pd
 from netvis.chart.bar import bar_template
-import netvis.chart.main.chart as Chart
+from netvis.chart.main.chart import Chart
 import webbrowser
 from IPython.core.display import display, HTML
 from IPython import get_ipython
