@@ -158,7 +158,7 @@ script_part = """
       .attr('width', xScale.bandwidth())
       .on('mouseenter', function (actual, i) {
         d3.selectAll('.|yname|')
-          .attr('opacity', 0)
+          .attr('opacity', 0.8)
 
         d3.select(this)
           .transition()
@@ -238,6 +238,7 @@ script_part = """
       .attr('y', 40)
       .attr('text-anchor', 'middle')
       .text('|title|')
+      .style('fill','|titlecolor|')
 
 
   

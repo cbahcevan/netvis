@@ -31,12 +31,12 @@ svg {
 }
 
 .bar {
-  fill: #416c9b;
+  fill: #0074D9;
 }
 
 text {
   font-size: 12px;
-  fill: gray;
+  fill: #85144b;
 }
 
 path {
@@ -150,7 +150,7 @@ text.source {
       .attr('width', xScale.bandwidth())
       .on('mouseenter', function (actual, i) {
         d3.selectAll('.Nufus')
-          .attr('opacity', 0)
+          .attr('opacity', 0.8)
 
         d3.select(this)
           .transition()
@@ -230,6 +230,7 @@ text.source {
       .attr('y', 40)
       .attr('text-anchor', 'middle')
       .text('Deneme')
+      .style('fill','#000')
 
 
   

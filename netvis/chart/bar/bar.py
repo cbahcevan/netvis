@@ -36,6 +36,7 @@ class BarChart(Chart):
         self.backgroundcolor = backgroundcolor
 
         self.current_html = ""
+        self.title_color = ""
 
         self.fontcolor = "#000"  # Default is black
 
@@ -55,6 +56,10 @@ class BarChart(Chart):
 
     def setVerticalLines(self, value):
         self.vertical_grids = value
+
+    
+    def setTitleColor(self,title_color):
+        self.title_color = title_color
 
     def constructDesignParts(self) -> str:
         self.current_html = ""
@@ -80,6 +85,16 @@ class BarChart(Chart):
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|title|", self.title)
+
+        """[summary]
+        Check if title font color is  specified
+        """
+        if self.title_color != "":
+            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.title_color)
+        else:
+            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.fontcolor)
+
+        
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|xtitle|", self.xtitle)
