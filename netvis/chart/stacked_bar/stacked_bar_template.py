@@ -79,6 +79,5 @@ var svg = d3.select("#my_dataviz")
 
 
 </script>
-
 """
 
