@@ -1,4 +1,4 @@
-
+initial_html = """
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -9,6 +9,11 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
+"""
+
+#changing font colors using css rather than assigning attr to svg elements
+
+css = """
 body {
   font-family: 'Open Sans', sans-serif;
 }
@@ -21,7 +26,7 @@ div#container {
   width: 1100px;
   height: 700px;
   margin: auto;
-  background-color: |backgroundcolor|;
+  background-color: |backgroundcolor|; //background-color of entire svg
 }
 
 svg {
@@ -76,9 +81,8 @@ text.source {
   font-size: 10px;
 }
 rect {
-  fill: lightsteelblue;
+  fill: lightsteelblue; //background color of chart |chart-color|
 }
-
 </style>
 </head>
 <body>
@@ -89,7 +93,13 @@ rect {
   </div>
 
 
+"""
+
+d3_js = """
 <script>
+
+  var scatter_data = |jsondata|
+
 
   const svg = d3.select('svg')
   const svgContainer = d3.select('#container');
@@ -104,21 +114,29 @@ rect {
   const width = 1000 - margin.left - margin.right;
   const height = 600 - margin.top - margin.bottom;
 
+
+  var colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+
   const chart = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  const x = d3.scaleLinear()
-    .domain([0,100])
-    .range([0,width])
+  var x = d3.scaleLinear()
+      .domain(d3.extent(scatter_data, function(d) {
+        return d.data_x;
+      }))
+      .range([0, width]);
 
-  const y = d3.scaleLinear()
-    .domain([0,50])
-    .range([height,0])
+  var y = d3.scaleLinear()
+      .domain(d3.extent(scatter_data, function(d) {
+        return d.data_y;
+      }))
+      .range([height, 0]);
 
-  var x_axis = d3.axisBottom(x)
+  var x_axis = d3.axisBottom(x).tickPadding(5)
 
-  var y_axis = d3.axisLeft(y)
+  var y_axis = d3.axisLeft(y).tickPadding(5)
 
   chart.append('rect')
         .attr('class','rect')
@@ -133,6 +151,22 @@ rect {
     .attr('transform',`translate(0,0)`)
     .call(y_axis)
 
+
+  var data = chart.selectAll("g.node").data(scatter_data, function(d) {
+    return d.name;
+  });
+
+  var dataGroup = data.enter().append("g").attr("class", "node")
+    .attr('transform', function(d) {
+      return "translate(" + x(d.data_x) + "," + y(d.data_y) + ")";
+    });
+
+  dataGroup.append("circle")
+    .attr("r", 2.5)
+    .attr("class", "dot")
+    .style("fill", function(d) {
+      return colors(d.type);
+    });
 
   function make_x_gridlines () {
     return d3.axisBottom(x).ticks(5)
@@ -159,17 +193,17 @@ rect {
 
   chart.append('text')
     .attr('class','title')
-//    .attr('transform',`translate(${1100/2},${margin.top})`)
+    .attr('text-anchor','middle')
     .attr('x',width/2)
     .attr('y', -margin.top)
-    .text('title')
+    .text('|title|')
 
   chart.append('text')
     .attr('class','axis_title')
     .attr('x',width/2)
     .attr('y',height + margin.top + margin.bottom)
     .attr('text-anchor','middle')
-    .text('x_title')
+    .text('|xtitle|')
 
   chart.append('text')
       .attr('class','axis_title')
@@ -177,7 +211,7 @@ rect {
       .attr('y', -margin.left)
       .attr('x', -height/2)
       .attr('text-anchor','middle')
-      .text('y_title')
+      .text('|ytitle|')
 
 
   chart.append('svg:image')
@@ -189,57 +223,20 @@ rect {
       .attr('text-align','center')
       .style('opacity', 0.30)
 
-  var dataset = d3.range(100).map(function(d) {
-    return {"y": 0.4*(d)+ d3.randomUniform(5)()
-  } })
-
-
-
-  var line = d3.line()
-    .x(function(d,i) { return x(i); })
-    .y(function(d) { return y(d.y); })
-    .curve(d3.curveMonotoneX)
-
-
-  chart.append('path')
-    .datum(dataset)
-    .attr('class','line')
-    .attr('d',line)
-
-console.log(dataset)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </script>
 </body>
 </html>
+
+"""
+
+
+additional_bottom_text = """
+"""
+
+
+horizontal_lines_part = """
+"""
+
+
+vertical_lines_part = """
+"""
