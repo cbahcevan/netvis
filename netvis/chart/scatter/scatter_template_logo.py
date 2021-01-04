@@ -215,7 +215,7 @@ d3_js = """
 
 
   chart.append('svg:image')
-      .attr('xlink:href','logos/white-long-logo.png')
+      .attr('xlink:href','templates/logos/white-long-logo.png')
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
