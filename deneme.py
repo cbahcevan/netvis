@@ -9,17 +9,17 @@ if __name__ == '__main__':
     my_df["Nufus"] = [15000, 4000, 3000]
     my_df["Color"] = ["#5d2f8e", "#5d2f8e", "#5d2f8e"]
 
-    # my_pie_chart = pie.PieChart(my_df, "Deneme", "Sehir", "Nufus")
-    # my_pie_chart.showChart()
+    my_pie_chart = pie.PieChart(my_df, "Deneme", "Sehir", "Nufus")
+    my_pie_chart.showChart()
 
-    my_bar_chart = bar.BarChart(
-        my_df, "Deneme", "Sehir", "Nufus", "Sehir", "Nufus", "#5d2f8e")
-    # my_bar_chart.setHorizontalLines(True)
-    # my_bar_chart.setVerticalLines(True)
-
-    my_bar_chart.setBarColor("#0074D9")
-    my_bar_chart.setFontColor("#85144b")
-
-    my_bar_chart.setTitleColor("#000")
-    
-    my_bar_chart.showChart()
+    # my_bar_chart = bar.BarChart(
+    #     my_df, "Deneme", "Sehir", "Nufus", "Sehir", "Nufus", "#5d2f8e")
+    # # my_bar_chart.setHorizontalLines(True)
+    # # my_bar_chart.setVerticalLines(True)
+    #
+    # my_bar_chart.setBarColor("#0074D9")
+    # my_bar_chart.setFontColor("#85144b")
+    #
+    # my_bar_chart.setTitleColor("#000")
+    #
+    # my_bar_chart.showChart()

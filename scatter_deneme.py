@@ -1,6 +1,6 @@
 from netvis.chart.pie import pie
 from netvis.chart.bar import bar
-from netvis.chart.scatter import scatter_logo
+from netvis.chart.scatter import scatter
 import pandas as pd
 
 if __name__ == '__main__':
@@ -44,5 +44,5 @@ if __name__ == '__main__':
 	testDF['data_x'] = x
 	testDF['data_y'] = y
 
-	my_chart = scatter_logo.ScatterPlot(testDF,"Names and Numbers","X","Y")
+	my_chart = scatter.ScatterPlot(testDF,"Names and Numbers","X","Y")
 	my_chart.showChart()

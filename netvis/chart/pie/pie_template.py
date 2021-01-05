@@ -19,6 +19,12 @@ design_part = """
             width: 25%;
             margin: 25px auto;
         }
+img {
+            width: 100%;
+            opacity: 0.3;
+
+        }
+
 """
 
 
@@ -31,7 +37,10 @@ script_part = """
         <h2> |Title| </h2>
         <div>
             <canvas id="myChart"></canvas>
+            <img src="templates/logos/long-logo.png" alt = 'long-logo' style = "float:right;width:140px;height:40px;">
+
         </div>
+
     </div>
   <script>
     var ctx = document.getElementById("myChart").getContext('2d');
@@ -50,6 +59,40 @@ script_part = """
 </html>
 
 """
+
+
+script_part_without_logo = """
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2> |Title| </h2>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+
+    </div>
+  <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: |jsonLabelsData|,
+        datasets: [{
+        backgroundColor: |jsonColorsData|,
+        data: |jsonValuesData|
+        }]
+    }
+    });
+  </script>
+</body>
+</html>
+
+"""
+
+
+
 
 
 additional_bottom_text = """
