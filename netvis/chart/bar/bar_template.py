@@ -5,8 +5,8 @@ static_initial_part = """
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-  
-  
+
+
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
@@ -89,6 +89,9 @@ text.label {
 text.source {
   font-size: 10px;
 }
+rect {
+  fill: lightsteelblue; //background color of chart |chart-color|
+}
 </style>
 </head>
 <body>
@@ -103,13 +106,13 @@ text.source {
 
 script_part = """
 <script>
-  
+
     const sample =  |jsondata|
 
 
     const svg = d3.select('svg');
     const svgContainer = d3.select('#container');
-    
+
     const margin = 80;
     const width = 1000 - 2 * margin;
     const height = 600 - 2 * margin;
@@ -117,11 +120,16 @@ script_part = """
     const chart = svg.append('g')
       .attr('transform', `translate(${margin}, ${margin})`);
 
+    chart.append('rect')
+      .attr('class','rect')
+      .attr('width',width)
+      .attr('height',height)
+
     const xScale = d3.scaleBand()
       .range([0, width])
       .domain(sample.map((s) => s.|xname|))
       .padding(0.4)
-    
+
     const yScale = d3.scaleLinear()
       .range([height, 0])
       .domain([0, |maxy|]);
@@ -184,7 +192,7 @@ script_part = """
           .attr('text-anchor', 'middle')
           .text((a, idx) => {
             const divergence = (a.|yname| - actual.|yname|).toFixed(1)
-            
+
             let text = ''
             if (divergence > 0) text += '+'
             text += `${divergence}%`
@@ -208,14 +216,14 @@ script_part = """
         chart.selectAll('.divergence').remove()
       })
 
-    barGroups 
+    barGroups
       .append('text')
       .attr('class', '|yname|')
       .attr('x', (a) => xScale(a.|xname|) + xScale.bandwidth() / 2)
       .attr('y', (a) => yScale(a.|yname|) + 30)
       .attr('text-anchor', 'middle')
       .text((a) => `${a.|yname|}`)//percentage
-    
+
     svg
       .append('text')
       .attr('class', 'label')
@@ -240,8 +248,16 @@ script_part = """
       .text('|title|')
       .style('fill','|titlecolor|')
 
+    chart.append('svg:image')
+      .attr('xlink:href','templates/logos/white-long-logo.png')
+      .attr('width',300)
+      .attr('height',300)
+      .attr('x',width/2 - 300/2)
+      .attr('y',height/2 - 300/2)
+      .attr('text-align','center')
+      .style('opacity', 0.30)
 
-  
+
   </script>
 </body>
 </html>
