@@ -42,6 +42,7 @@ text {
 
 path.line {
   fill: none;
+  stroke-width:2;
   stroke: |line-color|;
 }
 
