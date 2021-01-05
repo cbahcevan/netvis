@@ -2,13 +2,14 @@
 import pandas as pd
 import webbrowser
 from IPython.core.display import display, HTML
+from IPython.display import IFrame
 from IPython import get_ipython
 
 def isEnviromentIPython() -> bool:
     try:
         shell_name = get_ipython().__class__.__name__
         return shell_name in ['ZMQInteractiveShell','TerminalInteractiveShell']
-    
+
     except:
         return False
 
@@ -28,14 +29,12 @@ class Chart:
         self.saveChart('deneme.html')
 
         if isEnviromentIPython():
-            display(HTML("<iframe width='1000' height='700' frameBorder='0' src='deneme.html'></iframe>"))
-        
+            #display(HTML("<iframe width='1000' height='700' frameBorder='0' src='deneme.html'></iframe>"))
+            display(IFrame(src = 'deneme.html',width= '1000',height = '650'))
+
         else:
             webbrowser.open('deneme.html')
 
 
 if __name__ ==  '__main__':
     print('Main chart class is imported.')
-
-
-
