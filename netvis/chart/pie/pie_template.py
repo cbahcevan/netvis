@@ -37,7 +37,7 @@ script_part = """
         <h2> |Title| </h2>
         <div>
             <canvas id="myChart"></canvas>
-            <img src="templates/logos/long-logo.png" alt = 'long-logo' style = "float:right;width:140px;height:40px;">
+            <img src="https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/long-logo.png?token=AKHWOQ5O4UY5E2KUKFOKJ5S773KIG" alt = 'long-logo' style = "float:right;width:140px;height:40px;">
 
         </div>
 

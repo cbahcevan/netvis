@@ -214,7 +214,7 @@ d3_js = """
 
 
   chart.append('svg:image')
-      .attr('xlink:href','templates/logos/white-long-logo.png')
+      .attr('xlink:href',"https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ5KRG3XHUFINTLVGYK773J3Q")
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
