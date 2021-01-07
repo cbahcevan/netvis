@@ -21,7 +21,7 @@ div#container {
   width: 1100px;
   height: 700px;
   margin: auto;
-  background-color: |backgroundcolor|;
+  background-color: |backgroundcolor|; //background-color of entire svg
 }
 
 svg {
@@ -39,15 +39,12 @@ path {
   stroke: gray;
 }
 
-line {
-  stroke: gray;
+.line {
+  fill:none;
+  stroke: orange;
+  stroke-width: 2;
 }
 
-line#limit {
-  stroke: #FED966;
-  stroke-width: 3;
-  stroke-dasharray: 3 6;
-}
 
 .grid path {
   stroke-width: 0;
@@ -79,7 +76,8 @@ text.source {
   font-size: 10px;
 }
 rect {
-  fill: lightsteelblue;
+  fill: none;
+  opacity: 0.2//background color of chart |chart-color|
 }
 
 </style>
@@ -119,9 +117,9 @@ rect {
     .domain([0,50])
     .range([height,0])
 
-  var x_axis = d3.axisBottom(x)
+  var x_axis = d3.axisBottom(x).tickPadding(2);
 
-  var y_axis = d3.axisLeft(y)
+  var y_axis = d3.axisLeft(y).tickPadding(2)
 
   chart.append('rect')
         .attr('class','rect')
@@ -162,17 +160,17 @@ rect {
 
   chart.append('text')
     .attr('class','title')
-//    .attr('transform',`translate(${1100/2},${margin.top})`)
+    .attr('text-anchor','middle')
     .attr('x',width/2)
     .attr('y', -margin.top)
-    .text('title')
+    .text('X versus Y Test Title')
 
   chart.append('text')
     .attr('class','axis_title')
     .attr('x',width/2)
     .attr('y',height + margin.top + margin.bottom)
     .attr('text-anchor','middle')
-    .text('x_title')
+    .text('X Test Title')
 
   chart.append('text')
       .attr('class','axis_title')
@@ -180,11 +178,11 @@ rect {
       .attr('y', -margin.left)
       .attr('x', -height/2)
       .attr('text-anchor','middle')
-      .text('y_title')
+      .text('Y Test Title')
 
 
   chart.append('svg:image')
-      .attr('xlink:href','logos/white-long-logo.png')
+      .attr('xlink:href','logos/long-logo.png')
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
@@ -192,15 +190,24 @@ rect {
       .attr('text-align','center')
       .style('opacity', 0.30)
 
+//  var dataset = d3.range(100).map(function(d) {
+//    return {"y": 0.4*(d)+ d3.randomUniform(5)()
+//  } })
 
 
 
+//  var line = d3.line()
+//    .x(function(d,i) { return x(i); })
+//    .y(function(d) { return y(d.y); })
+//    .curve(d3.curveMonotoneX)
 
 
+//  chart.append('path')
+//    .datum(dataset)
+//    .attr('class','line')
+//    .attr('d',line)
 
-
-
-
+//console.log(dataset)
 
 
 

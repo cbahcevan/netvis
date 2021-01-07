@@ -76,7 +76,8 @@ text.source {
   font-size: 10px;
 }
 rect {
-  fill: lightsteelblue; //background color of chart |chart-color|
+  fill: none;
+  opacity: 0.2//background color of chart |chart-color|
 }
 
 </style>
@@ -91,15 +92,6 @@ rect {
 
 <script>
 
-
-  var scatter_data = [{"name":"Ethel","type":1,"data_x":5,"data_y":6},{"name":"Ben","type":5,"data_x":11,"data_y":1},{"name":"John","type":5,"data_x":1,"data_y":2},
-  {"name":"Carole","type":4,"data_x":23,"data_y":1},{"name":"Mildred","type":4,"data_x":27,"data_y":4},{"name":"Patricia","type":2,"data_x":8,"data_y":4},
-  {"name":"Margaret","type":4,"data_x":56,"data_y":0},{"name":"Kerri","type":3,"data_x":87,"data_y":2},{"name":"Nathan","type":1,"data_x":24,"data_y":5},
-  {"name":"Dennis","type":4,"data_x":81,"data_y":3},{"name":"Kendra","type":4,"data_x":56,"data_y":0},{"name":"Hassan","type":4,"data_x":37,"data_y":2},
-  {"name":"Henry","type":5,"data_x":31,"data_y":4},{"name":"Charles","type":1,"data_x":73,"data_y":4},{"name":"Shane","type":3,"data_x":82,"data_y":3},
-  {"name":"Gail","type":2,"data_x":28,"data_y":5}]
-
-
   const svg = d3.select('svg')
   const svgContainer = d3.select('#container');
 
@@ -113,29 +105,21 @@ rect {
   const width = 1000 - margin.left - margin.right;
   const height = 600 - margin.top - margin.bottom;
 
-
-  var colors = d3.scaleOrdinal(d3.schemeCategory10);
-
-  
   const chart = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  var x = d3.scaleLinear()
-      .domain(d3.extent(scatter_data, function(d) {
-        return d.data_x;
-      }))
-      .range([0, width]);
+  const x = d3.scaleLinear()
+    .domain([0,100])
+    .range([0,width])
 
-  var y = d3.scaleLinear()
-      .domain(d3.extent(scatter_data, function(d) {
-        return d.data_y;
-      }))
-      .range([height, 0]);
+  const y = d3.scaleLinear()
+    .domain([0,50])
+    .range([height,0])
 
-  var x_axis = d3.axisBottom(x).tickPadding(5)
+  var x_axis = d3.axisBottom(x).tickPadding(2);
 
-  var y_axis = d3.axisLeft(y).tickPadding(5)
+  var y_axis = d3.axisLeft(y).tickPadding(2)
 
   chart.append('rect')
         .attr('class','rect')
@@ -149,30 +133,6 @@ rect {
   chart.append('g')
     .attr('transform',`translate(0,0)`)
     .call(y_axis)
-
-
-  var data = chart.selectAll("g.node").data(scatter_data, function(d) {
-    return d.name;
-  });
-
-  console.log(data.length)
-  var dataGroup = data.enter().append("g").attr("class", "node")
-    .attr('transform', function(d) {
-      return "translate(" + x(d.data_x) + "," + y(d.data_y) + ")";
-    });
-
-  dataGroup.append("circle")
-    .attr("r", 2.5)
-    .attr("class", "dot")
-    .style("fill", function(d) {
-      return colors(d.type);
-    });
-
-
-
-
-
-
 
 
   function make_x_gridlines () {
@@ -222,13 +182,63 @@ rect {
 
 
   chart.append('svg:image')
-      .attr('xlink:href','logos/white-long-logo.png')
+      .attr('xlink:href','logos/black-long-logo.png')
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
       .attr('y',height/2 - 300/2)
       .attr('text-align','center')
       .style('opacity', 0.30)
+
+//  var dataset = d3.range(100).map(function(d) {
+//    return {"y": 0.4*(d)+ d3.randomUniform(5)()
+//  } })
+
+
+
+//  var line = d3.line()
+//    .x(function(d,i) { return x(i); })
+//    .y(function(d) { return y(d.y); })
+//    .curve(d3.curveMonotoneX)
+
+
+//  chart.append('path')
+//    .datum(dataset)
+//    .attr('class','line')
+//    .attr('d',line)
+
+//console.log(dataset)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   </script>
