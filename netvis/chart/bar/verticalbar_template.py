@@ -1,4 +1,5 @@
 
+static_initial_part = """
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -9,7 +10,11 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
+"""
 
+
+
+design_part = """
 body {
   font-family: 'Open Sans', sans-serif;
 }
@@ -31,62 +36,16 @@ svg {
 }
 
 .bar {
-  fill: #416c9b;
+  fill: |barcolor|;
 }
 
-text {
-  font-size: 12px;
-  fill: #000;
-}
-
-path {
-  stroke: gray;
-}
-
-line {
-  stroke: gray;
-}
-
-line#limit {
-  stroke: #FED966;
-  stroke-width: 3;
-  stroke-dasharray: 3 6;
-}
-
-.grid path {
-  stroke-width: 0;
-}
-
-.grid .tick line {
-  stroke: #000;
-  stroke-opacity: 0.3;
-}
-
-text.divergence {
-  font-size: 14px;
-  fill: #2F4A6D;
-}
-
-text.value {
-  font-size: 14px;
-}
-
-text.title {
+   .title {
   font-size: 22px;
   font-weight: 600;
-}
-
-text.label {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-text.source {
-  font-size: 10px;
-}
-rect {
-  fill: lightsteelblue; //background color of chart |chart-color|
-}
+  }
+  .text{
+      font-size:14;
+  }
 </style>
 </head>
 <body>
@@ -96,10 +55,13 @@ rect {
     </div>
   </div>
 
+"""
 
+
+script_part = """
 <script>
 
-const sample =  [{"Sehir":"Istanbul","Nufus":20000,"Color":"#5d2f8e"},{"Sehir":"Ankara","Nufus":6000,"Color":"#5d2f8e"},{"Sehir":"Bursa","Nufus":3000,"Color":"#5d2f8e"}]
+const sample =  |jsondata|
 
 
 var margin = {top: 80, right: 30, bottom: 40, left: 100},
@@ -122,14 +84,14 @@ const chartArea = svg.append("g")
         .attr('x', (width / 2 ) + margin.left )
         .attr('y', margin.top / 2)
         .attr('text-anchor', 'middle')
-        .text('Deneme')
+        .text('|title|')
 
 svg.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2) + margin.left )
         .attr('y', height + (margin.top + margin.bottom) + 20 )
         .attr('text-anchor', 'middle')
-        .text('Nufus')
+        .text('|xname|')
         .style("font", "22px times")
                                      
 /*
@@ -162,7 +124,7 @@ chartArea.append("g").attr("transform", "translate(0," + height + ")")
 
 const yScale = d3.scaleBand()
                   .range([0,500])
-                  .domain(sample.map(function(d) { return d.Sehir; }))
+                  .domain(sample.map(function(d) { return d.|yname|; }))
                   .padding(0.2)
 
 chartArea.append("g").style("font", "15px times").call(d3.axisLeft(yScale));
@@ -175,8 +137,8 @@ const barGroups = chartArea.selectAll("bars")
 
 barGroups.append("rect")
         .attr("x",xScale(0))
-        .attr("y", function(d) { return yScale(d.Sehir); })
-        .attr("width", function(d) { return xScale(d.Nufus); })
+        .attr("y", function(d) { return yScale(d.|yname|); })
+        .attr("width", function(d) { return xScale(d.|xname|); })
         .attr("height",yScale.bandwidth)
         .attr("fill", "#5F89AD");
 
@@ -186,3 +148,35 @@ barGroups.append("rect")
   </script>
 </body>
 </html>
+"""
+
+
+additional_bottom_text = """
+    svg.append('text')
+      .attr('class', 'source')
+      .attr('x', width - margin / 2)
+      .attr('y', height + margin * 1.7)
+      .attr('text-anchor', 'start')
+      .text('|bottomtext|')
+"""
+
+
+
+horizontal_lines_part = """
+    chart.append('g')
+      .attr('class', 'grid')
+      .call(makeYLines()
+        .tickSize(-width, 0, 0)
+        .tickFormat(''))
+"""
+
+
+vertical_lines_part = """
+        chart.append('g')
+       .attr('class', 'grid')
+       .attr('transform', `translate(0, ${height})`)
+       .call(makeXLines()
+         .tickSize(-height, 0, 0)
+         .tickFormat('')
+       )
+"""
