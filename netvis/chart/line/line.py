@@ -13,50 +13,60 @@ class LineChart(Chart):
                  title="",
                  xtitle="",
                  ytitle="",
-                 color="black",
-                 backgroundcolor=""
+                 fontcolor="black",
+                 backgroundcolor="",
+                 theme="dark",
+                 x_isdate=False,
+                 y_isdate =False
                  ):
 
+        if len(df.columns) == 2:
+            #single line
+            df.insert(2, 'type', 'one')
+
+        df.columns = ['data_x','data_y','type']
 
         self.data_of_chart = df.to_json(orient="records")
 
         self.title = title
         self.xtitle = xtitle
         self.ytitle = ytitle
-        self.color = color
+
         self.backgroundcolor = backgroundcolor
+        self.fontcolor = fontcolor
+        self.theme = theme
+
+        self.x_isdate = x_isdate
+        self.y_isdate = y_isdate
 
         self.current_html = ""
-        self.title_color = ""
 
-        self.fontcolor = "#000"
-
-
-
-#------------ needs to be adjusted properly ------------------#
-    def setFontColor(self, fontcolor):
-        self.fontcolor = fontcolor
-
-    def setHorizontalLines(self, value):
-        self.horizontal_grids = value
-
-    def setVerticalLines(self, value):
-        self.vertical_grids = value
-
-    def setTitleColor(self,title_color):
-        self.title_color = title_color
-
-#------------ needs to be adjusted properly ------------------#
 
 
     def constructorDesignPart(self) -> str:
         self.current_html = ""
+        self.current_html = line_template.initial_html + line_template.css.replace('|text-color|',
+            self.fontcolor)
 
-        formatted_line_css = line_template.css.replace('|line-color|',
-        self.color)
+        if self.theme == "light":
 
-        self.current_html = line_template.initial_html + formatted_line_css
+            self.current_html += line_template.d3_light
+            self.current_html = self.current_html.replace('|grid-line|','black')
 
+        elif self.theme == "blue":
+            self.current_html += line_template.d3_blue
+            self.current_html = self.current_html.replace('|grid-line|','white')
+
+        elif self.theme == 'dark':
+            self.current_html += line_template.d3_dark
+            self.current_html = self.current_html.replace('|grid-line|','white')
+
+        elif self.theme == 'paper':
+            self.current_html += line_template.d3_paper
+            self.current_html = self.current_html.replace('|grid-line|','black')
+
+        else:
+            print('Invalid Theme/Color')
 
     def constructChartHTML(self) -> str:
 
@@ -64,6 +74,13 @@ class LineChart(Chart):
 
         line_html_formatted = line_template.d3_js.replace(
             "|jsondata|", self.data_of_chart)
+
+        #date time checker
+        if self.x_isdate:
+            line_html_formatted = line_html_formatted.replace('var x = d3.scaleLinear()','var x = d3.scaleTime()')
+
+        if self.y_isdate:
+            line_html_formatted = line_html_formatted.replace('var x = d3.scaleLinear()','var x = d3.scaleTime()')
 
         line_html_formatted = line_html_formatted.replace(
 			"|xtitle|", self.xtitle)
@@ -73,7 +90,6 @@ class LineChart(Chart):
 
         line_html_formatted = line_html_formatted.replace(
 			"|title|",self.title)
-
 
 
         self.current_html = self.current_html + line_html_formatted

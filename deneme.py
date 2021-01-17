@@ -59,14 +59,35 @@ if __name__ == '__main__':
 
 
 #--------------------------------line test -------------------------------------
-    import datetime as datetime
-    #x = np.random.randint(low=0, high=100, size=10)
-    base = datetime.datetime.today()
-    x = [(base - datetime.timedelta(weeks=x)) for x in range(10)]
-    y = np.random.randint(low=0, high=100, size=10)
+    # import datetime as datetime
+    # #x = np.random.randint(low=0, high=100, size=10)
+    #
+    # #datetime test
+    # base = datetime.datetime.today()
+    # x = [(base - datetime.timedelta(weeks=x)) for x in range(10)]
+    # y = np.random.randint(low=0, high=100, size=10)
+    #
+    # #x.sort()
+    # y.sort()
+    # my_df = pd.DataFrame({'data_x':x,'data_y':y})
+    # my_line_chart = line.LineChart(my_df,'Date Test','Title X', 'Title Y', x_isdate = True,theme = 'paper')
+    # my_line_chart.showChart()
+    #
 
-    #x.sort()
-    y.sort()
-    my_df = pd.DataFrame({'data_x':x,'data_y':y})
-    my_line_chart = line.LineChart(my_df,'Test Title','Title X', 'Title Y','red')
+#-------------------------------multi line test --------------------------------
+
+    df = pd.read_csv('/Users/kayhan.eryilmaz/Desktop/dummy data.csv')
+    df.columns = ['data_x','data_y','data_y2','data_y3']
+    df1 = df[['data_x','data_y']]
+    df1.columns = ['data_x','data_y']
+    df1.insert(2, 'type', 'one')
+    df2= df[['data_x','data_y2']]
+    df2.columns = ['data_x','data_y']
+    df2.insert(2, 'type', 'two')
+    df3 = df[['data_x','data_y3']]
+    df3.columns = ['data_x','data_y']
+    df3.insert(2, 'type', 'three')
+
+    df = pd.concat([df1,df2,df3])
+    my_line_chart = line.LineChart(df,'Test Title','Title X', 'Title Y',theme = 'paper')
     my_line_chart.showChart()
