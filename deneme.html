@@ -1,4 +1,5 @@
 
+
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -19,10 +20,10 @@ div#layout {
 }
 
 div#container {
-  width: 1000px;
+  width: 800px;
   height: 600px;
   margin: auto;
-  background-color: |backgroundcolor|;
+  background-color: |backgroundcolor|; //background-color of entire svg
 }
 
 svg {
@@ -30,45 +31,34 @@ svg {
   height: 100%;
 }
 
-.bar {
-  fill: #416c9b;
-}
-
 text {
   font-size: 12px;
-  fill: #000;
+  fill: black;
 }
 
-path {
-  stroke: gray;
+
+path.line {
+  fill: none;
+  stroke-width:2;
+  stroke: red;
 }
 
-line {
-  stroke: gray;
-}
-
-line#limit {
-  stroke: #FED966;
-  stroke-width: 3;
-  stroke-dasharray: 3 6;
+.axis line{
+  stroke: black;
 }
 
 .grid path {
-  stroke-width: 0;
+  stroke: none;
 }
 
 .grid .tick line {
-  stroke: #000;
+  stroke: white;
   stroke-opacity: 0.3;
-}
-
-text.divergence {
-  font-size: 14px;
-  fill: #2F4A6D;
 }
 
 text.value {
   font-size: 14px;
+  fill: black;
 }
 
 text.title {
@@ -76,9 +66,10 @@ text.title {
   font-weight: 600;
 }
 
-text.label {
-  font-size: 14px;
+text.axis_title {
+  font-size: 16px;
   font-weight: 400;
+  fill: black;
 }
 
 text.source {
@@ -87,6 +78,7 @@ text.source {
 rect {
   fill: lightsteelblue; //background color of chart |chart-color|
 }
+
 </style>
 </head>
 <body>
@@ -97,92 +89,124 @@ rect {
   </div>
 
 
+
+
 <script>
 
-const sample =  [{"Sehir":"Istanbul","Nufus":20000,"Color":"#5d2f8e"},{"Sehir":"Ankara","Nufus":6000,"Color":"#5d2f8e"},{"Sehir":"Bursa","Nufus":3000,"Color":"#5d2f8e"}]
+  const svg = d3.select('svg')
+  const svgContainer = d3.select('#container');
+
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  const line_data = [{"data_x":1610378344752,"data_y":5},{"data_x":1609773544752,"data_y":11},{"data_x":1609168744752,"data_y":35},{"data_x":1608563944752,"data_y":41},{"data_x":1607959144752,"data_y":50},{"data_x":1607354344752,"data_y":56},{"data_x":1606749544752,"data_y":74},{"data_x":1606144744752,"data_y":81},{"data_x":1605539944752,"data_y":85},{"data_x":1604935144752,"data_y":86}]
+
+  var x = d3.scaleLinear()
+        .domain(d3.extent(line_data, function(d) {
+          return d.data_x;
+        }))
+        .range([0, width]);
+
+  var y = d3.scaleLinear()
+        .domain(d3.extent(line_data, function(d) {
+          return d.data_y;
+        }))
+        .range([height, 0]);
+
+  var x_axis = d3.axisBottom(x).tickPadding(2);
+
+  var y_axis = d3.axisLeft(y).tickPadding(2)
+
+  chart.append('rect')
+        .attr('class','rect')
+        .attr('width',width)
+        .attr('height',height)
+
+  chart.append('g')
+    .attr('transform',`translate(0,${height})`)
+    .attr('class','axis')
+    .call(x_axis)
+
+  chart.append('g')
+    .attr('transform',`translate(0,0)`)
+    .attr('class','axis')
+    .call(y_axis)
 
 
-var margin = {top: 80, right: 30, bottom: 40, left: 100},
-width = 700 - margin.left - margin.right,
-height = 600 - margin.top - margin.bottom;
-pure_height = 600;
+  function make_x_gridlines () {
+    return d3.axisBottom(x).ticks(5)
+  }
 
-const svg = d3.select("svg").attr("width", width + margin.left + margin.right)
-                                    .attr("height", pure_height + margin.top + margin.bottom)
+  function make_y_gridlines () {
+    return d3.axisLeft(y).ticks(5)
+  }
 
+  chart.append('g')
+    .attr('class','grid')
+    .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+        )
 
+  chart.append('g')
+      .attr('class', 'grid')
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      );
 
-const chartArea = svg.append("g")
-                .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+  chart.append('text')
+    .attr('class','title')
+    .attr('text-anchor','middle')
+    .attr('x',width/2)
+    .attr('y', -margin.top)
+    .text('Test Title')
 
-                                    
-  
- svg.append('text')
-        .attr('class', 'title')
-        .attr('x', (width / 2 ) + margin.left )
-        .attr('y', margin.top / 2)
-        .attr('text-anchor', 'middle')
-        .text('Deneme')
+  chart.append('text')
+    .attr('class','axis_title')
+    .attr('x',width/2)
+    .attr('y',height + margin.top + margin.bottom)
+    .attr('text-anchor','middle')
+    .text('Title X')
 
-svg.append('text')
-        .attr('class', 'label')
-        .attr('x', (width / 2) + margin.left )
-        .attr('y', height + (margin.top + margin.bottom) + 20 )
-        .attr('text-anchor', 'middle')
-        .text('Nufus')
-        .style("font", "22px times")
-                                     
-/*
-svg.append('text')
-        .attr('class', 'label')
-        .attr('x', 0 )
-        .attr('y', pure_height / 2 )
-        .attr('text-anchor', 'middle')
-        .text('Y ekseni')
-        .attr('transform','rotate(271)')
-        .style("font", "22px times");
- */
+  chart.append('text')
+      .attr('class','axis_title')
+      .attr("transform","rotate(-90)")
+      .attr('y', -margin.left)
+      .attr('x', -height/2)
+      .attr('text-anchor','middle')
+      .text('Title Y')
 
+  chart.append('svg:image')
+      .attr('xlink:href',"https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ5KRG3XHUFINTLVGYK773J3Q")
+      .attr('width',300)
+      .attr('height',300)
+      .attr('x',width/2 - 300/2)
+      .attr('y',height/2 - 300/2)
+      .attr('text-align','center')
+      .style('opacity', 0.30)
 
-const xScale = d3.scaleLinear()
-                 .range([0,600])
-                 .domain([0,d3.max(sample, (d) => Number(d.Nufus))]);
-
-/*
-
-*/
-chartArea.append("g").attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(xScale))
-                .style("font", "15px times")
-                .selectAll("text")
-                .attr("transform", "translate(-10,0)rotate(-45)")
-                .style("text-anchor", "end")
-
-
-
-const yScale = d3.scaleBand()
-                  .range([0,500])
-                  .domain(sample.map(function(d) { return d.Sehir; }))
-                  .padding(0.2)
-
-chartArea.append("g").style("font", "15px times").call(d3.axisLeft(yScale));
-
-
-const barGroups = chartArea.selectAll("bars")
-        .data(sample)
-        .enter()
-        .append("g")
-
-barGroups.append("rect")
-        .attr("x",xScale(0))
-        .attr("y", function(d) { return yScale(d.Sehir); })
-        .attr("width", function(d) { return xScale(d.Nufus); })
-        .attr("height",yScale.bandwidth)
-        .attr("fill", "#5F89AD");
-
-
-
+  chart.append("path")
+      .datum(line_data)
+      .attr('class','line')
+      .attr("d", d3.line()
+  .x(function(d) { return x(d.data_x) })
+  .y(function(d) { return y(d.data_y) })
+  )
 
   </script>
 </body>
 </html>
+
