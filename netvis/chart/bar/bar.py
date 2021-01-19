@@ -32,6 +32,8 @@ class BarChartSchema(Chart):
 
         if ytitle == "":
             ytitle = yname
+        
+        self.df = df
 
         self.data_of_chart = df.to_json(orient="records")
 
@@ -107,9 +109,15 @@ class VerticalBarChart(BarChartSchema):
 
         self.constructDesignParts()
 
+
+
+
+
         bar_chart_script_formatted = verticalbar_template.script_part.replace(
             "|jsondata|", self.data_of_chart)
+
         
+
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|maxy|", self.max_y_value)
@@ -198,6 +206,20 @@ class HorizontalBarChart(BarChartSchema):
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|title|", self.title)
+
+        # X axis labels length rotation
+
+        lettersoflabels = "".join(self.df[self.xname].values.tolist())
+        
+        lengthoflabels = len(lettersoflabels)
+
+        
+        if lengthoflabels > 65:
+            bar_chart_script_formatted = bar_chart_script_formatted.replace("|rotationtext|",bar_template.text_rotation)
+        else:
+            bar_chart_script_formatted = bar_chart_script_formatted.replace("|rotationtext|","")
+
+        
 
         """[summary]
         Check if title font color is  specified

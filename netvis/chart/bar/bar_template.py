@@ -143,7 +143,11 @@ script_part = """
 
     chart.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale))
+      |rotationtext|;
+
+
+
 
     chart.append('g')
       .call(d3.axisLeft(yScale));
@@ -291,4 +295,11 @@ vertical_lines_part = """
          .tickSize(-height, 0, 0)
          .tickFormat('')
        )
+"""
+
+text_rotation = """
+      .selectAll("text")
+      .attr("y", -2)
+      .attr("x", 30)
+      .attr("transform", "rotate(90)");
 """

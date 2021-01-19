@@ -123,9 +123,17 @@ chartArea.append("g").attr("transform", "translate(0," + height + ")")
 
 
 const yScale = d3.scaleBand()
-                  .range([0,500])
+                  .range([0,480])
                   .domain(sample.map(function(d) { return d.|yname|; }))
                   .padding(0.2)
+
+
+
+const makeXLines = () => d3.axisBottom()
+       .scale(xScale)
+
+const makeYLines = () => d3.axisLeft()
+      .scale(yScale)
 
 chartArea.append("g").style("font", "15px times").call(d3.axisLeft(yScale));
 
@@ -141,6 +149,12 @@ barGroups.append("rect")
         .attr("width", function(d) { return xScale(d.|xname|); })
         .attr("height",yScale.bandwidth)
         .attr("fill", "#5F89AD");
+
+barGroups.append("text")
+          .attr("x", function(d) { return xScale(d.|xname|)  } )
+          .attr("y",  function(d) { return yScale(d.|yname|) + 20; })
+          .attr("dy", ".25em")
+          .text(function(d) { return d.|xname|; });
 
 
 
