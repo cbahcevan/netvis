@@ -24,7 +24,7 @@ div#layout {
 }
 
 div#container {
-  width: 1000px;
+  width: 1200px;
   height: 600px;
   margin: auto;
   background-color: |backgroundcolor|;
@@ -108,7 +108,7 @@ svg.append('text')
 
 const xScale = d3.scaleLinear()
                  .range([0,600])
-                 .domain([0,d3.max(sample, (d) => Number(d.Nufus))]);
+                 .domain([0,d3.max(sample, (d) => Number(d.|xname|))]);
 
 /*
 
