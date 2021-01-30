@@ -253,7 +253,7 @@ script_part = """
       .style('fill','|titlecolor|')
 
     chart.append('svg:image')
-      .attr('xlink:href',"https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ5KRG3XHUFINTLVGYK773J3Q")
+      .attr('xlink:href',"logo.svg")
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
@@ -299,7 +299,7 @@ vertical_lines_part = """
 
 text_rotation = """
       .selectAll("text")
-      .attr("y", -2)
-      .attr("x", 30)
-      .attr("transform", "rotate(90)");
+      .attr('text-anchor', 'start')
+      .attr("x", 5)
+      .attr("transform", "rotate(45)");
 """

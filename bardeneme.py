@@ -13,7 +13,7 @@ if __name__ == '__main__':
     horizontal or vertical
     """
     my_bar_chart = bar.BarChart(
-        my_df, "2021 Şehirlerin nüfusları", xname="Sehir",yname="Nufus")
+        my_df, "2021 Şehirlerin nüfusları", yname="Nufus",xname="Sehir")
     
     my_bar_chart.setHorizontalLines(True)
     my_bar_chart.setVerticalLines(True)
