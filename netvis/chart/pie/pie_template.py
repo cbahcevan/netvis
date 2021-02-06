@@ -1,110 +1,115 @@
 
 static_initial_part = """
-<html lang="en">
+<html>
     <head>
-      <meta charset="UTF-8"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-      <title>Pie Chart</title>
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-      <script src="https://d3js.org/d3.v5.min.js"></script>
-      <style>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
+        <script src="./netvis/chart/pie/d3pie.min.js"></script>
+
+        <style>
+            .content {
+              max-width: 500px;
+              margin: auto;
+            }
+            </style>
+
+    </head>
+    <body>
+
+        <div class="content" id="pieChart"></div>
 """
 
 
-
 design_part = """
-.container {
-            width: 25%;
-            margin: 25px auto;
-        }
-img {
-            width: 100%;
-            opacity: 0.3;
-
-        }
 
 """
 
 
 script_part = """
 
-</style>
-</head>
-<body>
-    <div class="container">
-        <h2> |Title| </h2>
-        <div>
-            <canvas id="myChart"></canvas>
-            <img src="https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/long-logo.png?token=AKHWOQ5O4UY5E2KUKFOKJ5S773KIG" alt = 'long-logo' style = "float:right;width:140px;height:40px;">
+        <script>
+            var pie = new d3pie("pieChart", {
+                "header": {
+                    "title": {
+                        "text": "|Title|",
+                        "fontSize": 24,
+                        "font": "open sans"
+                    },
+                    "subtitle": {
+                        "text": "|SubTopTitle|",
+                        "color": "#999999",
+                        "fontSize": 12,
+                        "font": "open sans"
+                    },
+                    "titleSubtitlePadding": 9
+                },
+                "footer": {
+                    "text": "|SubBottomTitle|",
+                    "color": "#999999",
+                    "fontSize": 10,
+                    "font": "open sans",
+                    "location": "bottom-center"
+                },
+                "size": {
+                    "canvasWidth": 590,
+                    "pieOuterRadius": "92%"
+                },
+                "data": {
+                    "sortOrder": "value-desc",
+                    "content": |jsonValuesData|
+                },
+                "labels": {
+                    "outer": {
+                        "format": "label-value1",
+                        "pieDistance": 17
+                    },
+                    "mainLabel": {
+                        "color": "#000000",
+                        "fontSize": 11
+                    },
+                    "percentage": {
+                        "color": "#ffffff",
+                        "decimalPlaces": 0
+                    },
+                    "value": {
+                        "color": "#000000",
+                        "fontSize": 11
+                    },
+                    "lines": {
+                        "enabled": true,
+                        "color": "#d40c0c"
+                    },
+                    "truncation": {
+                        "enabled": true
+                    }
+                },
+                "effects": {
+                    "pullOutSegmentOnClick": {
+                        "effect": "linear",
+                        "speed": 400,
+                        "size": 8
+                    }
+                },
+                "misc": {
+                    "gradient": {
+                        "enabled": true,
+                        "percentage": 100
+                    }
+                },
+                "callbacks": {}
+            });
 
-        </div>
+        </script>
 
-    </div>
-  <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: |jsonLabelsData|,
-        datasets: [{
-        backgroundColor: |jsonColorsData|,
-        data: |jsonValuesData|
-        }]
-    }
-    });
-  </script>
-</body>
+    </body>
 </html>
-
 """
-
-
-script_part_without_logo = """
-
-</style>
-</head>
-<body>
-    <div class="container">
-        <h2> |Title| </h2>
-        <div>
-            <canvas id="myChart"></canvas>
-        </div>
-
-    </div>
-  <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: |jsonLabelsData|,
-        datasets: [{
-        backgroundColor: |jsonColorsData|,
-        data: |jsonValuesData|
-        }]
-    }
-    });
-  </script>
-</body>
-</html>
-
-"""
-
-
-
 
 
 additional_bottom_text = """
-
+    
 """
 
 
 horizontal_lines_part = """
-
-"""
-
-
-vertical_lines_part = """
-
+   
 """
