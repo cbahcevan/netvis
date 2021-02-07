@@ -1,100 +1,6 @@
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
-
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <style>
-
-body {
-  font-family: 'Open Sans', sans-serif;
-}
-
-div#layout {
-  text-align: center;
-}
-
-div#container {
-  width: 1000px;
-  height: 600px;
-  margin: auto;
-  background-color: |backgroundcolor|;
-}
-
-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.bar {
-  fill: #416c9b;
-}
-
-text {
-  font-size: 12px;
-  fill: #000;
-}
-
-path {
-  stroke: gray;
-}
-
-line {
-  stroke: gray;
-}
-
-line#limit {
-  stroke: #FED966;
-  stroke-width: 3;
-  stroke-dasharray: 3 6;
-}
-
-.grid path {
-  stroke-width: 0;
-}
-
-.grid .tick line {
-  stroke: #000;
-  stroke-opacity: 0.3;
-}
-
-text.divergence {
-  font-size: 14px;
-  fill: #2F4A6D;
-}
-
-text.value {
-  font-size: 14px;
-}
-
-text.title {
-  font-size: 22px;
-  font-weight: 600;
-}
-
-text.label {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-text.source {
-  font-size: 10px;
-}
-
-</style>
-</head>
-<body>
-  <div id='layout'>
-    <div id='container'>
-      <svg />
-    </div>
-  </div>
-
-
+groupped_template = """
 <script>
 
   var margin = {top: 150, right: 30, bottom: 40, left: 100};
@@ -111,25 +17,25 @@ svg.append('text')
         .attr('x', (width / 2.5 ) + margin.left )
         .attr('y', 20)
         .attr('text-anchor', 'middle')
-        .text('Sehirler arası dagilim')
+        .text('|title|')
 
 svg.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2))
         .attr('y', height + 50  )
         .attr('text-anchor', 'middle')
-        .text('sehir')
+        .text('|group|')
         .style("font", "22px times")
   
 
 const chart = svg.append('g').attr("width", width + margin.left + margin.right)
                                     .attr("height", pure_height + margin.top + margin.bottom)
 
-  var data = [{"sehir":"istanbul","nufus":15,"kirlilik":20},{"sehir":"ankara","nufus":3,"kirlilik":10},{"sehir":"izmir","nufus":4,"kirlilik":2},{"sehir":"berlin","nufus":8,"kirlilik":1},{"sehir":"bursa","nufus":6,"kirlilik":2}]
+  var data = |jsondata|
 
-  var subgroups = ['nufus', 'kirlilik']
+  var subgroups = |groups|
 
-  var groups = d3.map(data, function(d){return(d.sehir)}).keys()
+  var groups = d3.map(data, function(d){return(d.|group|)}).keys()
 
 
   var x = d3.scaleBand()
@@ -151,7 +57,7 @@ const chart = svg.append('g').attr("width", width + margin.left + margin.right)
     .range([0, x.bandwidth()])
     .padding([0.05])
 
-var colorGroup = ['#e41a1c','#377eb8','#4daf4a'];
+var colorGroup = |colorgroup|;
 
   var color = d3.scaleOrdinal()
     .domain(subgroups)
@@ -177,7 +83,7 @@ for (var i=0;i<subgroups.length;i++){
     .data(data)
     .enter()
     .append("g")
-      .attr("transform", function(d) { return "translate(" + x(d.sehir) + ",0)"; })
+      .attr("transform", function(d) { return "translate(" + x(d.|group|) + ",0)"; })
     .selectAll("rect")
     .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
     .enter().append("rect")
@@ -191,4 +97,6 @@ for (var i=0;i<subgroups.length;i++){
       </script>
       </body>
       </html>
+
+"""
 

@@ -2,6 +2,7 @@
 import pandas as pd
 from netvis.chart.bar import bar_template
 from netvis.chart.bar import verticalbar_template
+from netvis.chart.bar import grouppedbarchart_template
 from netvis.chart.main.chart import Chart
 import webbrowser
 from IPython.core.display import display, HTML
@@ -9,7 +10,11 @@ from IPython import get_ipython
 
 
 
-def BarChart(df,title,xname,yname,xtitle="",ytitle="",backgroundcolor="",orientation="h"):
+def BarChart(df,title,xname,yname,group="",xtitle="",ytitle="",backgroundcolor="",orientation="h"):
+
+    if group != "":
+        return GrouppedBarChart(df,title,xname,yname,group=group)
+
     if orientation == "h":
         return HorizontalBarChart(df,title,xname,yname, xtitle,ytitle, backgroundcolor)
     else:
@@ -24,7 +29,7 @@ class BarChartSchema(Chart):
                  yname,
                  xtitle="",
                  ytitle="",
-                 backgroundcolor=""
+                 backgroundcolor="#fff"
                  ):
 
         if xtitle == "":
@@ -60,6 +65,9 @@ class BarChartSchema(Chart):
     def setFontColor(self, fontcolor):
         self.fontcolor = fontcolor
 
+    def setBackgroundColor(self, backgroundcolor):
+        self.backgroundcolor = backgroundcolor
+
     def setBarColor(self, barcolor):
         self.barcolor = barcolor
 
@@ -80,8 +88,19 @@ class BarChartSchema(Chart):
 
         self.current_html = self.current_html.replace(
             "|barcolor|", self.barcolor)
+
         self.current_html = self.current_html.replace(
             "|textcolor|", self.fontcolor)
+
+        if self.title_color != "":
+            self.current_html = self.current_html.replace("|titlecolor|", self.title_color)
+        else:
+            self.current_html = self.current_html.replace("|titlecolor|", self.fontcolor)
+        
+        
+
+
+
 
 
 class VerticalBarChart(BarChartSchema):
@@ -132,10 +151,7 @@ class VerticalBarChart(BarChartSchema):
         """[summary]
         Check if title font color is  specified
         """
-        if self.title_color != "":
-            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.title_color)
-        else:
-            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.fontcolor)
+
 
         
 
@@ -144,8 +160,7 @@ class VerticalBarChart(BarChartSchema):
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|ytitle|", self.ytitle)
 
-        bar_chart_script_formatted = bar_chart_script_formatted.replace(
-            "|backgroundcolor|", self.backgroundcolor)
+
 
         if self.horizontal_grids is False:
             bar_chart_script_formatted = bar_chart_script_formatted.replace(
@@ -160,6 +175,15 @@ class VerticalBarChart(BarChartSchema):
         else:
             bar_chart_script_formatted = bar_chart_script_formatted.replace(
                 "|verticallinepart|", bar_template.vertical_lines_part)
+        
+        if self.backgroundcolor != "":
+            self.current_html = self.current_html.replace(
+                "|backgroundcolor|", self.backgroundcolor)
+
+        else:
+                self.current_html = self.current_html.replace(
+                "|backgroundcolor|", "#fff")
+        
 
         self.current_html = self.current_html + bar_chart_script_formatted
 
@@ -187,9 +211,7 @@ class HorizontalBarChart(BarChartSchema):
                  backgroundcolor)
 
             
-
-    
- 
+     
 
 
     def constructChartHTML(self) -> str:
@@ -221,13 +243,7 @@ class HorizontalBarChart(BarChartSchema):
 
         
 
-        """[summary]
-        Check if title font color is  specified
-        """
-        if self.title_color != "":
-            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.title_color)
-        else:
-            bar_chart_script_formatted = bar_chart_script_formatted.replace("|titlecolor|", self.fontcolor)
+
 
         
 
@@ -236,8 +252,7 @@ class HorizontalBarChart(BarChartSchema):
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|ytitle|", self.ytitle)
 
-        bar_chart_script_formatted = bar_chart_script_formatted.replace(
-            "|backgroundcolor|", self.backgroundcolor)
+
 
         if self.horizontal_grids is False:
             bar_chart_script_formatted = bar_chart_script_formatted.replace(
@@ -255,7 +270,48 @@ class HorizontalBarChart(BarChartSchema):
 
         self.current_html = self.current_html + bar_chart_script_formatted
 
+
+        if self.backgroundcolor != "":
+            self.current_html = self.current_html.replace(
+                "|backgroundcolor|", self.backgroundcolor)
+
+        else:
+                self.current_html = self.current_html.replace(
+                "|backgroundcolor|", "#fff")
+        
+
         return self.current_html
 
+
+
+class GrouppedBarChart(BarChartSchema):
+
+    def __init__(self, df, title, xname, yname,group, xtitle='', ytitle='',grouptitle="",backgroundcolor=''):
+
+        super(GrouppedBarChart, self).__init__(df, title, xname, yname, xtitle=xtitle, ytitle=ytitle, backgroundcolor=backgroundcolor)
+        self.grouplabel = group
+
+        self.colorRange = '[' + "','".join(["'#e41a1c",'#377eb8',"#4daf4a'"]) + ']'
+    
+    def constructChartHTML(self) -> str:
+
+        self.constructDesignParts()
+
+        bar_chart_script_formatted = grouppedbarchart_template.groupped_template.replace(
+            "|jsondata|", self.data_of_chart)
+
+        bar_chart_script_formatted = bar_chart_script_formatted.replace(
+            "|title|", self.title)
+
+        
+        bar_chart_script_formatted = bar_chart_script_formatted.replace("|groups|", str(self.df.columns.tolist()[1:]))
+
+        bar_chart_script_formatted = bar_chart_script_formatted.replace("|group|",self.grouplabel)
+
+        bar_chart_script_formatted = bar_chart_script_formatted.replace("|colorgroup|",self.colorRange)
+
+        self.current_html = self.current_html + bar_chart_script_formatted
+
+        return self.current_html
 
 

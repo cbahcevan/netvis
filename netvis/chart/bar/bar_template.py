@@ -89,9 +89,7 @@ text.label {
 text.source {
   font-size: 10px;
 }
-rect {
-  fill: lightsteelblue; //background color of chart |chart-color|
-}
+
 </style>
 </head>
 <body>
@@ -124,6 +122,7 @@ script_part = """
       .attr('class','rect')
       .attr('width',width)
       .attr('height',height)
+      .attr('fill','|backgroundcolor|')
 
     const xScale = d3.scaleBand()
       .range([0, width])
@@ -145,8 +144,6 @@ script_part = """
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScale))
       |rotationtext|;
-
-
 
 
     chart.append('g')

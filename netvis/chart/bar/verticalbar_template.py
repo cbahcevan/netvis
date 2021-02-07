@@ -25,7 +25,7 @@ div#layout {
 
 div#container {
   width: 1200px;
-  height: 600px;
+  height: 1000px;
   margin: auto;
   background-color: |backgroundcolor|;
 }
@@ -64,10 +64,11 @@ script_part = """
 const sample =  |jsondata|
 
 
-var margin = {top: 80, right: 30, bottom: 40, left: 100},
+var margin = {top: 80, right: 30, bottom: 40, left: 100};
+
 width = 700 - margin.left - margin.right,
 height = 600 - margin.top - margin.bottom;
-pure_height = 600;
+pure_height = 900;
 
 const svg = d3.select("svg").attr("width", width + margin.left + margin.right)
                                     .attr("height", pure_height + margin.top + margin.bottom)
@@ -86,13 +87,15 @@ const chartArea = svg.append("g")
         .attr('text-anchor', 'middle')
         .text('|title|')
 
+
 svg.append('text')
         .attr('class', 'label')
-        .attr('x', (width / 2) + margin.left )
-        .attr('y', height + (margin.top + margin.bottom) + 20 )
+        .attr('x', (width / 2))
+        .attr('y', height + margin.top + margin.bottom + 10   )
         .attr('text-anchor', 'middle')
         .text('|xname|')
         .style("font", "22px times")
+  
                                      
 /*
 svg.append('text')
