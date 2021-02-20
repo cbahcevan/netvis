@@ -97,33 +97,63 @@ text.source {
 
 <script>
 
-  var margin = {top: 150, right: 30, bottom: 40, left: 100};
+ const svg = d3.select('svg')
+ const svgContainer = d3.select('#container');
 
-  width = 700 - margin.left - margin.right,
-  height = 600 - margin.top - margin.bottom;
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  chart.append('rect')
+        .style('fill','steelblue')
+        .attr('width',width)
+        .attr('height',height)
+
+
+  chart.append('svg:image')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        .attr('width',300)
+        .attr('height',300)
+        .attr('x',width/2 - 300/2)
+        .attr('y',height/2 - 300/2)
+        .attr('text-align','center')
+        .style('opacity', 0.30)
+
+  const colorGroup = ['#ffa600','#ff6361','#bc5090','#984ea3','#58508d']
+ 
+
+
   pure_height = 600;
 
-  const svg = d3.select('svg')
 
 
-svg.append('text')
+chart.append('text')
         .attr('class', 'title')
         .attr('x', (width / 2.5 ) + margin.left )
         .attr('y', 20)
         .attr('text-anchor', 'middle')
         .text('Sehirler arası dagilim')
 
-svg.append('text')
+chart.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2))
         .attr('y', height + 50  )
         .attr('text-anchor', 'middle')
         .text('sehir')
         .style("font", "22px times")
-  
 
-const chart = svg.append('g').attr("width", width + margin.left + margin.right)
-                                    .attr("height", pure_height + margin.top + margin.bottom)
+
+
 
   var data = [{"sehir":"istanbul","nufus":15,"kirlilik":20},{"sehir":"ankara","nufus":3,"kirlilik":10},{"sehir":"izmir","nufus":4,"kirlilik":2},{"sehir":"berlin","nufus":8,"kirlilik":1},{"sehir":"bursa","nufus":6,"kirlilik":2}]
 
@@ -151,7 +181,6 @@ const chart = svg.append('g').attr("width", width + margin.left + margin.right)
     .range([0, x.bandwidth()])
     .padding([0.05])
 
-var colorGroup = ['#e41a1c','#377eb8','#4daf4a'];
 
   var color = d3.scaleOrdinal()
     .domain(subgroups)

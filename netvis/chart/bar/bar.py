@@ -10,15 +10,15 @@ from IPython import get_ipython
 
 
 
-def BarChart(df,title,xname,yname,group="",xtitle="",ytitle="",backgroundcolor="",orientation="h"):
+def BarChart(df,title,xname,yname,group="",xtitle="",ytitle="",backgroundcolor="",orientation="h",theme="light"):
 
     if group != "":
-        return GrouppedBarChart(df,title,xname,yname,group=group)
+        return GrouppedBarChart(df,title,xname,yname,group=group,theme=theme)
 
     if orientation == "h":
         return HorizontalBarChart(df,title,xname,yname, xtitle,ytitle, backgroundcolor)
     else:
-        return VerticalBarChart(df,title,xname,yname, xtitle,ytitle, backgroundcolor)
+        return VerticalBarChart(df,title,xname,yname, xtitle,ytitle, backgroundcolor,theme)
 
 
 class BarChartSchema(Chart):
@@ -27,18 +27,22 @@ class BarChartSchema(Chart):
                  title,
                  xname,
                  yname,
+                 theme,
                  xtitle="",
                  ytitle="",
-                 backgroundcolor="#fff"
+                 backgroundcolor="#fff",
                  ):
+
 
         if xtitle == "":
             xtitle = xname
 
         if ytitle == "":
             ytitle = yname
-        
+
         self.df = df
+
+        self.theme = theme
 
         self.data_of_chart = df.to_json(orient="records")
 
@@ -77,7 +81,7 @@ class BarChartSchema(Chart):
     def setVerticalLines(self, value):
         self.vertical_grids = value
 
-    
+
     def setTitleColor(self,title_color):
         self.title_color = title_color
 
@@ -96,15 +100,30 @@ class BarChartSchema(Chart):
             self.current_html = self.current_html.replace("|titlecolor|", self.title_color)
         else:
             self.current_html = self.current_html.replace("|titlecolor|", self.fontcolor)
-        
-        
+
+
+        if self.theme == "light":
+            self.current_html += bar_template.d3_light
+
+        elif self.theme == "dark":
+            self.current_html += bar_template.d3_dark
+
+        elif self.theme == "blue":
+            self.current_html += bar_template.d3_blue
+
+        elif self.theme == "paper":
+            self.current_html += bar_template.d3_paper
+
+        else:
+            print('Invalid Theme/Color')
+
 
 
 
 
 
 class VerticalBarChart(BarChartSchema):
-    
+
     def __init__(self,
                  df,
                  title,
@@ -129,14 +148,8 @@ class VerticalBarChart(BarChartSchema):
         self.constructDesignParts()
 
 
-
-
-
         bar_chart_script_formatted = verticalbar_template.script_part.replace(
             "|jsondata|", self.data_of_chart)
-
-        
-
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|maxy|", self.max_y_value)
@@ -153,7 +166,7 @@ class VerticalBarChart(BarChartSchema):
         """
 
 
-        
+
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|xtitle|", self.xtitle)
@@ -175,7 +188,7 @@ class VerticalBarChart(BarChartSchema):
         else:
             bar_chart_script_formatted = bar_chart_script_formatted.replace(
                 "|verticallinepart|", bar_template.vertical_lines_part)
-        
+
         if self.backgroundcolor != "":
             self.current_html = self.current_html.replace(
                 "|backgroundcolor|", self.backgroundcolor)
@@ -183,7 +196,7 @@ class VerticalBarChart(BarChartSchema):
         else:
                 self.current_html = self.current_html.replace(
                 "|backgroundcolor|", "#fff")
-        
+
 
         self.current_html = self.current_html + bar_chart_script_formatted
 
@@ -210,8 +223,8 @@ class HorizontalBarChart(BarChartSchema):
                  ytitle,
                  backgroundcolor)
 
-            
-     
+
+
 
 
     def constructChartHTML(self) -> str:
@@ -232,20 +245,20 @@ class HorizontalBarChart(BarChartSchema):
         # X axis labels length rotation
 
         lettersoflabels = "".join(self.df[self.xname].values.tolist())
-        
+
         lengthoflabels = len(lettersoflabels)
 
-        
+
         if lengthoflabels > 65:
             bar_chart_script_formatted = bar_chart_script_formatted.replace("|rotationtext|",bar_template.text_rotation)
         else:
             bar_chart_script_formatted = bar_chart_script_formatted.replace("|rotationtext|","")
 
-        
 
 
 
-        
+
+
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|xtitle|", self.xtitle)
@@ -278,7 +291,7 @@ class HorizontalBarChart(BarChartSchema):
         else:
                 self.current_html = self.current_html.replace(
                 "|backgroundcolor|", "#fff")
-        
+
 
         return self.current_html
 
@@ -286,13 +299,13 @@ class HorizontalBarChart(BarChartSchema):
 
 class GrouppedBarChart(BarChartSchema):
 
-    def __init__(self, df, title, xname, yname,group, xtitle='', ytitle='',grouptitle="",backgroundcolor=''):
+    def __init__(self, df, title, xname, yname,group,theme, xtitle='', ytitle='',grouptitle="",backgroundcolor=''):
 
-        super(GrouppedBarChart, self).__init__(df, title, xname, yname, xtitle=xtitle, ytitle=ytitle, backgroundcolor=backgroundcolor)
+        super(GrouppedBarChart, self).__init__(df, title, xname, yname,theme, xtitle=xtitle, ytitle=ytitle, backgroundcolor=backgroundcolor)
         self.grouplabel = group
 
         self.colorRange = '[' + "','".join(["'#e41a1c",'#377eb8',"#4daf4a'"]) + ']'
-    
+
     def constructChartHTML(self) -> str:
 
         self.constructDesignParts()
@@ -303,7 +316,7 @@ class GrouppedBarChart(BarChartSchema):
         bar_chart_script_formatted = bar_chart_script_formatted.replace(
             "|title|", self.title)
 
-        
+
         bar_chart_script_formatted = bar_chart_script_formatted.replace("|groups|", str(self.df.columns.tolist()[1:]))
 
         bar_chart_script_formatted = bar_chart_script_formatted.replace("|group|",self.grouplabel)
@@ -313,5 +326,3 @@ class GrouppedBarChart(BarChartSchema):
         self.current_html = self.current_html + bar_chart_script_formatted
 
         return self.current_html
-
-

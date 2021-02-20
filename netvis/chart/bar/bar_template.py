@@ -101,28 +101,165 @@ text.source {
 
 """
 
-
-script_part = """
+d3_dark = """
 <script>
 
+ const svg = d3.select('svg')
+ const svgContainer = d3.select('#container');
+
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  chart.append('rect')
+        .style('fill','lightslategrey')
+        .attr('width',width)
+        .attr('height',height)
+
+
+  chart.append('svg:image')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        .attr('width',300)
+        .attr('height',300)
+        .attr('x',width/2 - 300/2)
+        .attr('y',height/2 - 300/2)
+        .attr('text-align','center')
+        .style('opacity', 0.30)
+
+  const colorGroup = ['#ffa600','#ff6349','#ff2185']
+
+"""
+
+d3_light = """
+<script>
+
+ const svg = d3.select('svg')
+ const svgContainer = d3.select('#container');
+
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  chart.append('rect')
+        .style('fill','white')
+        .attr('width',width)
+        .attr('height',height)
+
+
+  chart.append('svg:image')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        .attr('width',300)
+        .attr('height',300)
+        .attr('x',width/2 - 300/2)
+        .attr('y',height/2 - 300/2)
+        .attr('text-align','center')
+        .style('opacity', 0.30)
+
+  const colorGroup = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999']
+"""
+
+d3_blue = """
+<script>
+
+ const svg = d3.select('svg')
+ const svgContainer = d3.select('#container');
+
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  chart.append('rect')
+        .style('fill','steelblue')
+        .attr('width',width)
+        .attr('height',height)
+
+
+  chart.append('svg:image')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        .attr('width',300)
+        .attr('height',300)
+        .attr('x',width/2 - 300/2)
+        .attr('y',height/2 - 300/2)
+        .attr('text-align','center')
+        .style('opacity', 0.30)
+
+  const colorGroup = ['#ffa600','#ff6361','#bc5090','#984ea3','#58508d']
+ """
+
+
+d3_paper = """
+<script>
+
+ const svg = d3.select('svg')
+ const svgContainer = d3.select('#container');
+
+  var margin = {
+    "left": 40,
+    "right": 30,
+    "top": 20,
+    "bottom": 30
+  };
+
+  const width = 780 - margin.left - margin.right;
+  const height = 468 - margin.top - margin.bottom;
+
+  const chart = svg.append('g')
+    .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
+    .attr('class','chart');
+
+  chart.append('rect')
+        .style('fill','LemonChiffon')
+        .attr('width',width)
+        .attr('height',height)
+
+
+  chart.append('svg:image')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        .attr('width',300)
+        .attr('height',300)
+        .attr('x',width/2 - 300/2)
+        .attr('y',height/2 - 300/2)
+        .attr('text-align','center')
+        .style('opacity', 0.30)
+
+  const colorGroup = ['#ff2626','#2965ff','#000000','#984ea3','#2b8f10']
+"""
+
+
+
+script_part = """
+
     const sample =  |jsondata|
-
-
-    const svg = d3.select('svg');
-    const svgContainer = d3.select('#container');
-
-    const margin = 80;
-    const width = 1000 - 2 * margin;
-    const height = 600 - 2 * margin;
-
-    const chart = svg.append('g')
-      .attr('transform', `translate(${margin}, ${margin})`);
-
-    chart.append('rect')
-      .attr('class','rect')
-      .attr('width',width)
-      .attr('height',height)
-      .attr('fill','|backgroundcolor|')
 
     const xScale = d3.scaleBand()
       .range([0, width])
@@ -250,7 +387,6 @@ script_part = """
       .style('fill','|titlecolor|')
 
     chart.append('svg:image')
-      .attr('xlink:href',"logo.svg")
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)

@@ -39,6 +39,7 @@ text {
 }
 .axis line{
   stroke: black;
+
 }
 
 .grid path {
@@ -112,14 +113,16 @@ d3_dark = """
         .attr('width',width)
         .attr('height',height)
 
+
   chart.append('svg:image')
-        .attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
         .attr('x',width/2 - 300/2)
         .attr('y',height/2 - 300/2)
         .attr('text-align','center')
         .style('opacity', 0.30)
+
   const color_palette = ['#ffa600','#ff6349','#ff2185']
 """
 
@@ -148,7 +151,7 @@ d3_light = """
         .attr('height',height)
 
   chart.append('svg:image')
-        .attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/long-logo.png?token=AKHWOQ62L3DTTIRURF2UG5DABWBBS' )
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/long-logo.png?token=AKHWOQ62L3DTTIRURF2UG5DABWBBS' )
         .attr('width',300)
         .attr('height',300)
         .attr('x',width/2 - 300/2)
@@ -185,7 +188,7 @@ d3_blue = """
         .attr('height',height)
 
   chart.append('svg:image')
-        .attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM')
         .attr('width',300)
         .attr('height',300)
         .attr('x',width/2 - 300/2)
@@ -221,7 +224,7 @@ d3_paper = """
         .attr('height',height)
 
   chart.append('svg:image')
-        .attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/gray-long-logo.png?token=AKHWOQ4NQYG74M2DXLPTJ23ABWQNE')
+        //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/gray-long-logo.png?token=AKHWOQ4NQYG74M2DXLPTJ23ABWQNE')
         .attr('width',300)
         .attr('height',300)
         .attr('x',width/2 - 300/2)
@@ -333,6 +336,7 @@ d3_js = """
   chart.selectAll('.line').data(line_nest).enter()
       .append("path")
       .attr('fill','none')
+      .attr('stroke-width', 2.5)
       .attr('stroke', function(d) {return color(d.key)})
       .attr("d", function(d){
              return d3.line()
@@ -340,6 +344,7 @@ d3_js = """
                .y(function(d) { return y(+d.data_y); })
                (d.values)
            })
+
 
 
   </script>

@@ -1,35 +1,29 @@
 
 
 groupped_template = """
-<script>
 
-  var margin = {top: 150, right: 30, bottom: 40, left: 100};
 
-  width = 700 - margin.left - margin.right,
-  height = 600 - margin.top - margin.bottom;
   pure_height = 600;
 
-  const svg = d3.select('svg')
 
 
-svg.append('text')
+chart.append('text')
         .attr('class', 'title')
         .attr('x', (width / 2.5 ) + margin.left )
         .attr('y', 20)
         .attr('text-anchor', 'middle')
         .text('|title|')
 
-svg.append('text')
+chart.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2))
         .attr('y', height + 50  )
         .attr('text-anchor', 'middle')
         .text('|group|')
         .style("font", "22px times")
-  
 
-const chart = svg.append('g').attr("width", width + margin.left + margin.right)
-                                    .attr("height", pure_height + margin.top + margin.bottom)
+
+
 
   var data = |jsondata|
 
@@ -57,7 +51,6 @@ const chart = svg.append('g').attr("width", width + margin.left + margin.right)
     .range([0, x.bandwidth()])
     .padding([0.05])
 
-var colorGroup = |colorgroup|;
 
   var color = d3.scaleOrdinal()
     .domain(subgroups)
@@ -99,4 +92,3 @@ for (var i=0;i<subgroups.length;i++){
       </html>
 
 """
-

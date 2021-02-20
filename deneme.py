@@ -8,7 +8,7 @@ import numpy as np
 if __name__ == '__main__':
 
 #--------------------- bar chart test -----------------------------------------------
-    #
+
     # my_df = pd.DataFrame(columns=["Sehir", "Nufus"])
     #
     # my_df["Sehir"] = ["Istanbul", "Ankara", "Bursa"]
@@ -30,14 +30,14 @@ if __name__ == '__main__':
 
 #---------------------------pie chart test ----------------------------------
 
-    #
+
     # my_df = pd.DataFrame(columns=["Sehir", "Nufus"])
     #
     # my_df["Sehir"] = ["Istanbul", "Ankara", "Bursa"]
     # my_df["Nufus"] = [15000, 4000, 3000]
     # my_df["Color"] = ["#5d2f8e", "#5d2f8e", "#5d2f8e"]
     #
-    # my_pie_chart = pie.PieChart(my_df, "Deneme", "Sehir", "Nufus")
+    # my_pie_chart = pie.PieChart(my_df, "Deneme", "Sehir", "Nufus",'x','y')
     # my_pie_chart.showChart()
 
 
@@ -76,18 +76,18 @@ if __name__ == '__main__':
 
 #-------------------------------multi line test --------------------------------
 
-    df = pd.read_csv('/Users/kayhan.eryilmaz/Desktop/dummy data.csv')
-    df.columns = ['data_x','data_y','data_y2','data_y3']
-    df1 = df[['data_x','data_y']]
-    df1.columns = ['data_x','data_y']
-    df1.insert(2, 'type', 'one')
-    df2= df[['data_x','data_y2']]
-    df2.columns = ['data_x','data_y']
-    df2.insert(2, 'type', 'two')
-    df3 = df[['data_x','data_y3']]
-    df3.columns = ['data_x','data_y']
-    df3.insert(2, 'type', 'three')
-
-    df = pd.concat([df1,df2,df3])
-    my_line_chart = line.LineChart(df,'Test Title','Title X', 'Title Y',theme = 'paper')
-    my_line_chart.showChart()
+    # df = pd.read_csv('/Users/kayhan.eryilmaz/Desktop/dummy data.csv')
+    # df.columns = ['data_x','data_y','data_y2','data_y3']
+    # df1 = df[['data_x','data_y']]
+    # df1.columns = ['data_x','data_y']
+    # df1.insert(2, 'type', 'one')
+    # df2= df[['data_x','data_y2']]
+    # df2.columns = ['data_x','data_y']
+    # df2.insert(2, 'type', 'two')
+    # df3 = df[['data_x','data_y3']]
+    # df3.columns = ['data_x','data_y']
+    # df3.insert(2, 'type', 'three')
+    #
+    # df = pd.concat([df1,df2,df3])
+    # my_line_chart = line.LineChart(df,'Test Title','Title X', 'Title Y',theme = 'blue')
+    # my_line_chart.showChart()

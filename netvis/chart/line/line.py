@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from netvis.chart.line import line_template
 from netvis.chart.main.chart import Chart
 import webbrowser
@@ -15,9 +16,7 @@ class LineChart(Chart):
                  ytitle="",
                  fontcolor="black",
                  backgroundcolor="",
-                 theme="dark",
-                 x_isdate=False,
-                 y_isdate =False
+                 theme="dark"
                  ):
 
         if len(df.columns) == 2:
@@ -36,10 +35,11 @@ class LineChart(Chart):
         self.fontcolor = fontcolor
         self.theme = theme
 
-        self.x_isdate = x_isdate
-        self.y_isdate = y_isdate
+        self.y_isdate = np.issubdtype(df['data_y'].dtype, np.datetime64)
+        self.x_isdate = np.issubdtype(df['data_x'].dtype, np.datetime64)
 
         self.current_html = ""
+
 
 
 
