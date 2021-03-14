@@ -59,31 +59,15 @@ svg {
 
 
 script_part = """
-<script>
 
 const sample =  |jsondata|
 
 
-var margin = {top: 80, right: 30, bottom: 40, left: 100};
 
-width = 700 - margin.left - margin.right,
-height = 600 - margin.top - margin.bottom;
-pure_height = 900;
-
-const svg = d3.select("svg").attr("width", width + margin.left + margin.right)
-                                    .attr("height", pure_height + margin.top + margin.bottom)
-
-
-
-const chartArea = svg.append("g")
-                .attr("transform","translate(" + margin.left + "," + margin.top + ")");
-
-                                    
-  
  svg.append('text')
         .attr('class', 'title')
         .attr('x', (width / 2 ) + margin.left )
-        .attr('y', margin.top / 2)
+        .attr('y', margin.top )
         .attr('text-anchor', 'middle')
         .text('|title|')
 
@@ -91,26 +75,24 @@ const chartArea = svg.append("g")
 svg.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2))
-        .attr('y', height + margin.top + margin.bottom + 10   )
+        .attr('y', height + margin.top + margin.bottom + 50   )
         .attr('text-anchor', 'middle')
         .text('|xname|')
         .style("font", "22px times")
   
                                      
-/*
 svg.append('text')
         .attr('class', 'label')
-        .attr('x', 0 )
-        .attr('y', pure_height / 2 )
+        .attr("x", - (width / 2)  )
+        .attr("y", 15)
         .attr('text-anchor', 'middle')
-        .text('Y ekseni')
-        .attr('transform','rotate(271)')
+        .text('|ytitle|')
+        .attr("transform", "rotate(-90)")
         .style("font", "22px times");
- */
 
 
 const xScale = d3.scaleLinear()
-                 .range([0,600])
+                 .range([0,width])
                  .domain([0,d3.max(sample, (d) => Number(d.|xname|))]);
 
 /*
@@ -126,7 +108,7 @@ chartArea.append("g").attr("transform", "translate(0," + height + ")")
 
 
 const yScale = d3.scaleBand()
-                  .range([0,480])
+                  .range([0,height])
                   .domain(sample.map(function(d) { return d.|yname|; }))
                   .padding(0.2)
 

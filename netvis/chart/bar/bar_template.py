@@ -25,7 +25,7 @@ div#layout {
 
 div#container {
   width: 1000px;
-  height: 600px;
+  height: 700px;
   margin: auto;
   background-color: |backgroundcolor|;
 }
@@ -115,19 +115,19 @@ d3_dark = """
   };
 
   const width = 780 - margin.left - margin.right;
-  const height = 468 - margin.top - margin.bottom;
+  const height = 508 - margin.top - margin.bottom;
 
-  const chart = svg.append('g')
+  const chartArea = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  chart.append('rect')
+  chartArea.append('rect')
         .style('fill','lightslategrey')
         .attr('width',width)
         .attr('height',height)
 
 
-  chart.append('svg:image')
+  chartArea.append('svg:image')
         //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
@@ -154,19 +154,19 @@ d3_light = """
   };
 
   const width = 780 - margin.left - margin.right;
-  const height = 468 - margin.top - margin.bottom;
+  const height = 520 - margin.top - margin.bottom;
 
-  const chart = svg.append('g')
+  const chartArea = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  chart.append('rect')
+  chartArea.append('rect')
         .style('fill','white')
         .attr('width',width)
         .attr('height',height)
 
 
-  chart.append('svg:image')
+  chartArea.append('svg:image')
         //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
@@ -192,19 +192,19 @@ d3_blue = """
   };
 
   const width = 780 - margin.left - margin.right;
-  const height = 468 - margin.top - margin.bottom;
+  const height = 508 - margin.top - margin.bottom;
 
-  const chart = svg.append('g')
+  const chartArea = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  chart.append('rect')
+  chartArea.append('rect')
         .style('fill','steelblue')
         .attr('width',width)
         .attr('height',height)
 
 
-  chart.append('svg:image')
+  chartArea.append('svg:image')
         //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
@@ -231,19 +231,19 @@ d3_paper = """
   };
 
   const width = 780 - margin.left - margin.right;
-  const height = 468 - margin.top - margin.bottom;
+  const height = 520   - margin.top - margin.bottom;
 
-  const chart = svg.append('g')
+  const chartArea = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  chart.append('rect')
+  chartArea.append('rect')
         .style('fill','LemonChiffon')
         .attr('width',width)
         .attr('height',height)
 
 
-  chart.append('svg:image')
+  chartArea.append('svg:image')
         //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
@@ -259,7 +259,10 @@ d3_paper = """
 
 script_part = """
 
+
     const sample =  |jsondata|
+
+    
 
     const xScale = d3.scaleBand()
       .range([0, width])
@@ -277,20 +280,20 @@ script_part = """
     const makeYLines = () => d3.axisLeft()
       .scale(yScale)
 
-    chart.append('g')
+    chartArea.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScale))
       |rotationtext|;
 
 
-    chart.append('g')
+    chartArea.append('g')
       .call(d3.axisLeft(yScale));
 
     |verticallinepart|
 
     |horizontallinepart|
 
-    const barGroups = chart.selectAll()
+    const barGroups = chartArea.selectAll()
       .data(sample)
       .enter()
       .append('g')
@@ -315,7 +318,7 @@ script_part = """
 
         const y = yScale(actual.|yname|)
 
-        line = chart.append('line')
+        line = chartArea.append('line')
           .attr('id', 'limit')
           .attr('x1', 0)
           .attr('y1', y)
@@ -350,8 +353,8 @@ script_part = """
           .attr('x', (a) => xScale(a.|xname|))
           .attr('width', xScale.bandwidth())
 
-        chart.selectAll('#limit').remove()
-        chart.selectAll('.divergence').remove()
+        chartArea.selectAll('#limit').remove()
+        chartArea.selectAll('.divergence').remove()
       })
 
     barGroups
@@ -362,31 +365,33 @@ script_part = """
       .attr('text-anchor', 'middle')
       .text((a) => `${a.|yname|}`)//percentage
 
-    svg
-      .append('text')
-      .attr('class', 'label')
-      .attr('x', -(height / 2) - margin)
-      .attr('y', margin / 2.4)
-      .attr('transform', 'rotate(-90)')
-      .attr('text-anchor', 'middle')
-      .text('|ytitle|')
+svg.append('text')
+        .attr('class', 'label')
+        .attr("x", - (width / 2)  )
+        .attr("y", 15)
+        .attr('text-anchor', 'middle')
+        .text('|ytitle|')
+        .attr("transform", "rotate(-90)")
+        .style("font", "22px times");
+
 
     svg.append('text')
       .attr('class', 'label')
-      .attr('x', width / 2 + margin)
-      .attr('y', height + margin * 1.7)
+      .attr('x', width / 2 )
+      .attr('y', height + 100 )
       .attr('text-anchor', 'middle')
+      .style("font", "22px times")
       .text('|xtitle|')
 
     svg.append('text')
       .attr('class', 'title')
-      .attr('x', width / 2 + margin)
+      .attr('x', width / 2)
       .attr('y', 40)
       .attr('text-anchor', 'middle')
       .text('|title|')
       .style('fill','|titlecolor|')
 
-    chart.append('svg:image')
+    chartArea.append('svg:image')
       .attr('width',300)
       .attr('height',300)
       .attr('x',width/2 - 300/2)
@@ -412,7 +417,7 @@ additional_bottom_text = """
 
 
 horizontal_lines_part = """
-    chart.append('g')
+    chartArea.append('g')
       .attr('class', 'grid')
       .call(makeYLines()
         .tickSize(-width, 0, 0)
@@ -421,7 +426,7 @@ horizontal_lines_part = """
 
 
 vertical_lines_part = """
-        chart.append('g')
+        chartArea.append('g')
        .attr('class', 'grid')
        .attr('transform', `translate(0, ${height})`)
        .call(makeXLines()

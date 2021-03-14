@@ -42,7 +42,7 @@ class BarChartSchema(Chart):
 
         self.df = df
 
-        self.theme = theme
+        self.theme = "light"
 
         self.data_of_chart = df.to_json(orient="records")
 
@@ -88,20 +88,6 @@ class BarChartSchema(Chart):
     def constructDesignParts(self) -> str:
         self.current_html = ""
 
-        self.current_html = bar_template.static_initial_part + bar_template.design_part
-
-        self.current_html = self.current_html.replace(
-            "|barcolor|", self.barcolor)
-
-        self.current_html = self.current_html.replace(
-            "|textcolor|", self.fontcolor)
-
-        if self.title_color != "":
-            self.current_html = self.current_html.replace("|titlecolor|", self.title_color)
-        else:
-            self.current_html = self.current_html.replace("|titlecolor|", self.fontcolor)
-
-
         if self.theme == "light":
             self.current_html += bar_template.d3_light
 
@@ -117,6 +103,22 @@ class BarChartSchema(Chart):
         else:
             print('Invalid Theme/Color')
 
+        self.current_html = bar_template.static_initial_part + bar_template.design_part + self.current_html  
+
+        self.current_html = self.current_html.replace(
+            "|barcolor|", self.barcolor)
+
+        self.current_html = self.current_html.replace(
+            "|textcolor|", self.fontcolor)
+
+        if self.title_color != "":
+            self.current_html = self.current_html.replace("|titlecolor|", self.title_color)
+        else:
+            self.current_html = self.current_html.replace("|titlecolor|", self.fontcolor)
+
+
+
+
 
 
 
@@ -131,7 +133,8 @@ class VerticalBarChart(BarChartSchema):
                  yname,
                  xtitle="",
                  ytitle="",
-                 backgroundcolor=""
+                 backgroundcolor="",
+                 theme="light"
                  ):
 
 

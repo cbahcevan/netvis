@@ -20,9 +20,9 @@ div#layout {
 
 div#container {
   width: 1000px;
-  height: 600px;
+  height: 700px;
   margin: auto;
-  background-color: |backgroundcolor|;
+  background-color: #fff;
 }
 
 svg {
@@ -31,7 +31,7 @@ svg {
 }
 
 .bar {
-  fill: #416c9b;
+  fill: #ff2626;
 }
 
 text {
@@ -108,19 +108,19 @@ text.source {
   };
 
   const width = 780 - margin.left - margin.right;
-  const height = 468 - margin.top - margin.bottom;
+  const height = 520   - margin.top - margin.bottom;
 
-  const chart = svg.append('g')
+  const chartArea = svg.append('g')
     .attr('transform',`translate(${margin.left + margin.right},${margin.top + margin.bottom})`)
     .attr('class','chart');
 
-  chart.append('rect')
-        .style('fill','steelblue')
+  chartArea.append('rect')
+        .style('fill','LemonChiffon')
         .attr('width',width)
         .attr('height',height)
 
 
-  chart.append('svg:image')
+  chartArea.append('svg:image')
         //.attr('xlink:href','https://raw.githubusercontent.com/cbahcevan/netvis/main/templates/logos/white-long-logo.png?token=AKHWOQ2ZBD3KJLVYZZANV2LABV5AM' )
         .attr('width',300)
         .attr('height',300)
@@ -129,95 +129,93 @@ text.source {
         .attr('text-align','center')
         .style('opacity', 0.30)
 
-  const colorGroup = ['#ffa600','#ff6361','#bc5090','#984ea3','#58508d']
- 
+  const colorGroup = ['#ff2626','#2965ff','#000000','#984ea3','#2b8f10']
 
 
-  pure_height = 600;
+const sample =  [{"Sehir":"IstanbulIstanbul","Nufus":20000},{"Sehir":"Ankara","Nufus":6000},{"Sehir":"Bursa","Nufus":3000},{"Sehir":"Berlin","Nufus":4000},{"Sehir":"HamburgHamburgHamburgHamburg","Nufus":5000},{"Sehir":"ParisParis","Nufus":6000},{"Sehir":"Zyxel","Nufus":9000},{"Sehir":"Huawei","Nufus":10000}]
 
 
 
-chart.append('text')
+ svg.append('text')
         .attr('class', 'title')
-        .attr('x', (width / 2.5 ) + margin.left )
-        .attr('y', 20)
+        .attr('x', (width / 2 ) + margin.left )
+        .attr('y', margin.top )
         .attr('text-anchor', 'middle')
-        .text('Sehirler arası dagilim')
+        .text('2021 Şehirlerin nüfusları')
 
-chart.append('text')
+
+svg.append('text')
         .attr('class', 'label')
         .attr('x', (width / 2))
-        .attr('y', height + 50  )
+        .attr('y', height + margin.top + margin.bottom + 50   )
         .attr('text-anchor', 'middle')
-        .text('sehir')
+        .text('Nufus')
         .style("font", "22px times")
+  
+                                     
+svg.append('text')
+        .attr('class', 'label')
+        .attr("x", - (width / 2)  )
+        .attr("y", 15)
+        .attr('text-anchor', 'middle')
+        .text('Sehir')
+        .attr("transform", "rotate(-90)")
+        .style("font", "22px times");
+
+
+const xScale = d3.scaleLinear()
+                 .range([0,width])
+                 .domain([0,d3.max(sample, (d) => Number(d.Nufus))]);
+
+/*
+
+*/
+chartArea.append("g").attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(xScale))
+                .style("font", "15px times")
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end")
+
+
+
+const yScale = d3.scaleBand()
+                  .range([0,height])
+                  .domain(sample.map(function(d) { return d.Sehir; }))
+                  .padding(0.2)
+
+
+
+const makeXLines = () => d3.axisBottom()
+       .scale(xScale)
+
+const makeYLines = () => d3.axisLeft()
+      .scale(yScale)
+
+chartArea.append("g").style("font", "15px times").call(d3.axisLeft(yScale));
+
+
+const barGroups = chartArea.selectAll("bars")
+        .data(sample)
+        .enter()
+        .append("g")
+
+barGroups.append("rect")
+        .attr("x",xScale(0))
+        .attr("y", function(d) { return yScale(d.Sehir); })
+        .attr("width", function(d) { return xScale(d.Nufus); })
+        .attr("height",yScale.bandwidth)
+        .attr("fill", "#5F89AD");
+
+barGroups.append("text")
+          .attr("x", function(d) { return xScale(d.Nufus)  } )
+          .attr("y",  function(d) { return yScale(d.Sehir) + 20; })
+          .attr("dy", ".25em")
+          .text(function(d) { return d.Nufus; });
 
 
 
 
-  var data = [{"sehir":"istanbul","nufus":15,"kirlilik":20},{"sehir":"ankara","nufus":3,"kirlilik":10},{"sehir":"izmir","nufus":4,"kirlilik":2},{"sehir":"berlin","nufus":8,"kirlilik":1},{"sehir":"bursa","nufus":6,"kirlilik":2}]
-
-  var subgroups = ['nufus', 'kirlilik']
-
-  var groups = d3.map(data, function(d){return(d.sehir)}).keys()
-
-
-  var x = d3.scaleBand()
-      .domain(groups)
-      .range([0, width])
-      .padding([0.2])
-  chart.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSize(0));
-
-  var y = d3.scaleLinear()
-    .domain([0, 40])
-    .range([ height, 0 ]);
-  chart.append("g")
-    .call(d3.axisLeft(y));
-
-  var xSubgroup = d3.scaleBand()
-    .domain(subgroups)
-    .range([0, x.bandwidth()])
-    .padding([0.05])
-
-
-  var color = d3.scaleOrdinal()
-    .domain(subgroups)
-    .range(colorGroup)
-
-
-var startY  =130;
-var fixCircleX = 480;
-var fixLegendTextX = 500
-
-for (var i=0;i<subgroups.length;i++){
-
-  svg.append("circle").attr("cx",fixCircleX).attr("cy",startY).attr("r", 6).style("fill", colorGroup[i])
-  svg.append("text").attr("x", fixLegendTextX).attr("y", startY).text(subgroups[i]).style("font-size", "15px").attr("alignment-baseline","middle")
-  startY = startY + 30
-
-}
-
-
-  // Show the bars
-  chart.append("g")
-    .selectAll("g")
-    .data(data)
-    .enter()
-    .append("g")
-      .attr("transform", function(d) { return "translate(" + x(d.sehir) + ",0)"; })
-    .selectAll("rect")
-    .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
-    .enter().append("rect")
-      .attr("x", function(d) { return xSubgroup(d.key); })
-      .attr("y", function(d) { return y(d.value); })
-      .attr("width", xSubgroup.bandwidth())
-      .attr("height", function(d) { return height - y(d.value); })
-      .attr("fill", function(d) { return color(d.key); });
-
-
-      </script>
-      </body>
-      </html>
-
+  </script>
+</body>
+</html>
