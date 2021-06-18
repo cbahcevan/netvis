@@ -78,6 +78,7 @@ text.source {
 <body>
   <div id='layout'>
     <div id='container'>
+    <svg>
       <svg />
     </div>
   </div>
@@ -95,13 +96,13 @@ d3_dark = """
   const svgContainer = d3.select('#container');
 
   var margin = {
-    "left": 40,
-    "right": 30,
+    "left": 0,
+    "right": 0,
     "top": 20,
     "bottom": 30
   };
 
-  const width = 780 - margin.left - margin.right;
+  const width = 700 - margin.left - margin.right;
   const height = 468 - margin.top - margin.bottom;
 
   const chart = svg.append('g')
