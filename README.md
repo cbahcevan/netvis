@@ -1,6 +1,6 @@
 # NetVis
 
-Visualization tool on Python and Jupyter notebook. Created using D3.js 
+## Visualization tool on Python and Jupyter notebook. Created using D3.js 
 
 An alternative python library for plotting data and creating data visualization tools. 
 The library makes use of D3.js and is very easy to implement it's plots and graphs into your Jupyter Notebooks without any need to utiilize HTML and Javascript. Currently, the available plots are:
@@ -14,16 +14,16 @@ The library makes use of D3.js and is very easy to implement it's plots and grap
 In addition to the variety of plotting styles in this library, you also have the option of using one of the built in custom themes.
 Here are some examples:
 
-<br>
 ### White Theme
+
 ![line chart white theme](https://user-images.githubusercontent.com/42952515/122541882-cf4ffc80-d032-11eb-868b-53188ac74a5e.png)
 
-<br>
 ### Dark Theme
 
 ![line chart dark theme](https://user-images.githubusercontent.com/42952515/122541875-ceb76600-d032-11eb-9b52-ca52d8376c63.png)
 
 ### Paper Theme
+
 ![line chart paper theme](https://user-images.githubusercontent.com/42952515/122541880-cf4ffc80-d032-11eb-88aa-cec087b1432b.png)
 
 ### Blue Theme
